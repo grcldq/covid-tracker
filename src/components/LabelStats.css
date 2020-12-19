@@ -1,0 +1,20 @@
+.stat-info {
+  display: flex !important;
+  flex-direction: row;
+}
+
+.stat-info .detail {
+  flex: 1;
+  text-align: right;
+}
+
+@media screen and (min-width: 768px) {
+  .stat-info {
+    flex-direction: column;
+  }
+
+  .stat-info .detail {
+    margin-left: 0 !important;
+    text-align: left;
+  }
+}
