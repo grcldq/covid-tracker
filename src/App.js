@@ -41,7 +41,7 @@ class App extends React.Component {
           <Loader active />
         ) : (
           <div>
-            <Header stats={this.state.globalStats} />
+            <Header data={this.state.globalStats} />
             <Filter
               updated={this.state.data[0] && this.state.data[0].updated}
               filter={this.state.filter}
@@ -84,11 +84,20 @@ class App extends React.Component {
   }
 
   fetchGlobalData() {
-    fetch(`${api}all`)
-      .then(response => response.json())
-      .then(globalStats => this.setState({ globalStats }))
-      .catch(() => {})
-      .finally(() => this.setState({ isFetchingGlobalStats: false }));
+    let globalStats = [];
+
+    Promise.all(
+      [`${api}all`, `${api}historical/all?lastdays=20`].map(url =>
+        fetch(url).then(response => response.json())
+      )
+    )
+      .then(responseData => (globalStats = [...globalStats, ...responseData]))
+      .catch(e => {
+        //TODO error handling
+      })
+      .finally(() => {
+        this.setState({ globalStats, isFetchingGlobalStats: false });
+      });
   }
 
   handleFilterChange(e, { value }) {

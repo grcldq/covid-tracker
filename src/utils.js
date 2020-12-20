@@ -1,5 +1,5 @@
 export function formatData(data) {
-  const formatted = [];
+  const formattedData = [];
 
   data.forEach(item => {
     const {
@@ -18,7 +18,7 @@ export function formatData(data) {
       updated,
     } = item;
 
-    formatted.push({
+    formattedData.push({
       updated,
       country,
       continent,
@@ -76,11 +76,11 @@ export function formatData(data) {
     });
   });
 
-  return formatted;
+  return formattedData;
 }
 
 export function formatContinents(data) {
-  const formatted = [];
+  const formattedData = [];
 
   data.forEach(item => {
     const {
@@ -96,7 +96,7 @@ export function formatContinents(data) {
       todayDeaths,
     } = item;
 
-    formatted.push({
+    formattedData.push({
       continent,
       countries,
       updated,
@@ -143,5 +143,51 @@ export function formatContinents(data) {
     });
   });
 
-  return formatted;
+  return formattedData;
 }
+
+export function formatChartData(data) {
+  const formattedData = Array(20).fill({});
+  
+  return new Promise((resolve, reject) => {
+    Object.entries(data).forEach(([parentKey, value]) => {
+      Object.entries(value).forEach(([key, value], index) => {
+        const date = new Date(key);
+        const formattedDateString = `${date.toLocaleString('default', {
+          month: 'short',
+        })} ${date.getDate()}`;
+
+        formattedData[index] = {
+          ...formattedData[index],
+          date: formattedDateString,
+          name: key,
+          [parentKey]: value,
+        };
+      });
+    });
+    
+    resolve(formattedData);
+  });
+}
+
+// export function formatChartData(data) {
+//   const formattedData = Array(20).fill({});
+
+//   Object.entries(data).forEach(([parentKey, value]) => {
+//     Object.entries(value).forEach(([key, value], index) => {
+//       const date = new Date(key);
+//       const formattedDateString = `${date.toLocaleString('default', {
+//         month: 'short',
+//       })} ${date.getDate()}`;
+
+//       formattedData[index] = {
+//         ...formattedData[index],
+//         date: formattedDateString,
+//         name: key,
+//         [parentKey]: value,
+//       };
+//     });
+//   });
+
+//   return formattedData;
+// }
