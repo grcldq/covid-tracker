@@ -3,5 +3,16 @@
 }
 
 .ui.header {
-  margin-bottom: 0;
+  margin-bottom: 0 !important;
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+}
+
+.col.space-between {
+  align-content: space-between;
+  flex: 1;
+  align-self: stretch;
 }
