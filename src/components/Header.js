@@ -1,36 +1,30 @@
-import LabelStats from './LabelStats';
-import './Header.css';
+import { Grid, Input, Header as Title } from 'semantic-ui-react';
 
-import { Grid } from 'semantic-ui-react';
-import { Header as Title } from 'semantic-ui-react';
-import { Input } from 'semantic-ui-react'
+import GlobalStats from './GlobalStats';
+import './Header.css';
 
 function Header(props) {
   return (
     <div className="Header">
       <div className="row space-between">
         <Title as="h1">COVID-19 Tracker</Title>
-        <Input icon='search' placeholder='Search...' />
+        <Input icon="search" placeholder="Search..." />
       </div>
-      <Grid columns={6} stackable>
-        <LabelStats color="black" title="Cases" total={props.stats.cases} />
-        <LabelStats
+      <Grid columns={1} stackable padded="vertically">
+        <GlobalStats color="yellow" title="Cases" total={props.stats.cases} />
+        <GlobalStats
           color="olive"
           title="Recovered"
           total={props.stats.recovered}
         />
-        <LabelStats color="red" title="Deaths" total={props.stats.deaths} />
-        <LabelStats
+        <GlobalStats color="red" title="Deaths" total={props.stats.deaths} />
+        <GlobalStats
           color="grey"
           title="Tests Conducted"
           total={props.stats.tests}
         />
-        <LabelStats
-          color="yellow"
-          title="Active"
-          total={props.stats.active}
-        />
-        <LabelStats
+        <GlobalStats color="black" title="Active" total={props.stats.active} />
+        <GlobalStats
           color="orange"
           title="Critical"
           total={props.stats.critical}

@@ -1,34 +1,22 @@
 import { Dropdown } from 'semantic-ui-react';
-import { filterContinents, sortOptions } from '../constants';
 
+import { filterOptions } from '../constants';
 import './Filter.css';
 
 function Filter(props) {
   return (
     <div className="row space-between">
-      <div className="filter-container">
+      <div>
         <Dropdown
-          options={filterContinents}
-          placeholder="Filter Continents"
-          search
-          selection
+          placeholder="Filter By"
           fluid
-          multiple
-          value={props.selectedFilters}
+          selection
+          value={props.filter}
+          options={filterOptions}
           onChange={props.filtersChange}
         />
       </div>
-      <div className="sort-container">
-        <Dropdown
-          placeholder="Sort By"
-          fluid
-          selection
-          value={props.sort}
-          icon="sort"
-          options={sortOptions}
-          onChange={props.sortChange}
-        />
-      </div>
+      <p>Last updated {new Date(props.updated).toLocaleString()}</p>
     </div>
   );
 }

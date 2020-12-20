@@ -1,59 +1,75 @@
-import {
-  Card,
-  Image,
-  Loader,
-  Placeholder,
-  Statistic,
-} from 'semantic-ui-react';
+import { Card, Image, Loader, Placeholder, Table } from 'semantic-ui-react';
 
-function Content({ data, loading }) {
+import { tableHeaders } from '../constants';
+
+function Content({ data, loading, isCountryView }) {
   //TODO: lazy loading
-  const placeholder = (
-    <Placeholder>
-      <Placeholder.Header image>
-        <Placeholder.Line />
-        <Placeholder.Line />
-      </Placeholder.Header>
-      <Placeholder.Paragraph>
-        <Placeholder.Line length="medium" />
-        <Placeholder.Line length="short" />
-        <Placeholder.Line length="short" />
-      </Placeholder.Paragraph>
-    </Placeholder>
-  );
+  const placeholder = <Placeholder></Placeholder>;
 
   if (loading) return <Loader active />;
 
-  console.log(data);
+  //TODO: sort table
+  const renderCountriesContent = () => (
+    <Table celled selectable>
+      <Table.Header>
+        {tableHeaders.map((headers, index) => (
+          <Table.Row key={index}>
+            {headers.map(item => (
+              <Table.HeaderCell
+                key={item.key}
+                colSpan={item.col}
+                rowSpan={item.row}
+              >
+                {item.text}
+              </Table.HeaderCell>
+            ))}
+          </Table.Row>
+        ))}
+      </Table.Header>
 
-  return (
-    <Card.Group itemsPerRow={3} stackable>
-      {data.map((item, index) => (
-        <Card
-          key={(item && item.country) || index}
-          color="teal"
-          style={{ height: loading ? '200px' : 'auto' }}
-        >
+      <Table.Body>
+        {data.map(item => (
+          <Table.Row key={item.country}>
+            <Table.Cell>
+              <Image floated="left" size="mini" src={item.flag} />
+              {item.country}
+            </Table.Cell>
+            {item.totalStats.map(statistic => (
+              <Table.Cell
+                key={statistic.key}
+                negative={statistic.key === 'deaths'}
+                positive={statistic.key === 'recoveries'}
+                warning={statistic.key === 'cases'}
+              >
+                {statistic.value.toLocaleString()}
+              </Table.Cell>
+            ))}
+          </Table.Row>
+        ))}
+      </Table.Body>
+    </Table>
+  );
+
+  // TODO: fix continents card
+  const renderContinentsContent = () => (
+    <Card.Group itemsPerRow={2}>
+      {data.map(item => (
+        <Card fluid key={item.continent}>
           <Card.Content>
-            <Image floated="left" size="mini" src={item.flag} />
-            <Card.Header>{item.country}</Card.Header>
-            <Card.Description>
-              <Statistic.Group horizontal size="mini">
-                {item.stats.map(statistic => (
-                  <Statistic key={statistic.title}>
-                    <Statistic.Value>
-                      {statistic.value.toLocaleString()}
-                    </Statistic.Value>
-                    <Statistic.Label>{statistic.title}</Statistic.Label>
-                  </Statistic>
-                ))}
-              </Statistic.Group>
-            </Card.Description>
+            <Card.Header>{item.continent}</Card.Header>
+            <Card.Meta>
+              {item.countries.map((country, index) =>
+                index === 0 ? country : ` | ${country}`
+              )}
+            </Card.Meta>
+            <Card.Description></Card.Description>
           </Card.Content>
         </Card>
       ))}
     </Card.Group>
   );
+
+  return isCountryView ? renderCountriesContent() : renderContinentsContent();
 }
 
 export default Content;

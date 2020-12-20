@@ -4,7 +4,7 @@ import { Container, Loader } from 'semantic-ui-react';
 import Header from './components/Header';
 import Content from './components/Content';
 import Filter from './components/Filter';
-import { formatData } from './utils';
+import { formatContinents, formatData } from './utils';
 import { api } from './constants';
 
 import './App.css';
@@ -14,10 +14,11 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      countryData: Array(9).fill(null),
+      data: Array(9).fill(null),
       globalStats: [],
-      isFetchingCountryData: true,
+      isFetchingData: true,
       isFetchingGlobalStats: true,
+      filter: 'countries',
       sort: 'cases',
       filteredData: [],
     };
@@ -26,7 +27,7 @@ class App extends React.Component {
   componentDidMount() {
     this.bindHandlers();
     this.fetchGlobalData();
-    this.fetchCountryData();
+    this.fetchData();
   }
 
   componentWillUnmount() {
@@ -42,19 +43,18 @@ class App extends React.Component {
           <div>
             <Header stats={this.state.globalStats} />
             <Filter
-              sort={this.state.sort}
-              filtersAddition={this.handleFilterAddition}
+              updated={this.state.data[0] && this.state.data[0].updated}
+              filter={this.state.filter}
               filtersChange={this.handleFilterChange}
-              selectedFilters={this.state.selectedFilters}
-              sortChange={this.handleSortChange}
             />
             <Content
               data={
                 this.state.filteredData.length > 0
                   ? this.state.filteredData
-                  : this.state.countryData
+                  : this.state.data
               }
-              loading={this.state.isFetchingCountryData}
+              loading={this.state.isFetchingData}
+              isCountryView={this.state.filter === 'countries'}
             />
           </div>
         )}
@@ -63,17 +63,21 @@ class App extends React.Component {
   }
 
   bindHandlers() {
-    this.handleSortChange = this.handleSortChange.bind(this);
     this.handleFilterChange = this.handleFilterChange.bind(this);
   }
 
-  fetchCountryData() {
-    fetch(`${api}countries?sort=${this.state.sort}`)
-      .then(response => response.json())
-      .then(data => {
-        const countryData = formatData(data);
+  fetchData(filter = this.state.filter) {
+    const { sort } = this.state;
 
-        this.setState({ countryData });
+    fetch(`${api}${filter}?sort=${sort}`)
+      .then(response => response.json())
+      .then(responseData => {
+        const data =
+          filter === 'countries'
+            ? formatData(responseData)
+            : formatContinents(responseData);
+
+        this.setState({ data });
       })
       .catch(() => {})
       .finally(() => this.toggleDataLoading());
@@ -88,26 +92,15 @@ class App extends React.Component {
   }
 
   handleFilterChange(e, { value }) {
-    const filteredData = this.state.countryData.filter(result =>
-      value.includes(result.continent.toLowerCase())
-    );
-
-    this.setState({
-      filteredData,
-      selectedFilters: value,
-    });
-  }
-
-  handleSortChange(e, { value }) {
     e.preventDefault();
 
+    this.setState({ filter: value });
     this.toggleDataLoading();
-    this.setState({ sort: value }, () => this.fetchCountryData());
+    this.fetchData(value);
   }
 
   toggleDataLoading() {
-    this.setState({ isFetchingCountryData: !this.state.isFetchingCountryData });
-    console.log(this.state.isFetchingCountryData);
+    this.setState({ isFetchingData: !this.state.isFetchingData });
   }
 }
 
