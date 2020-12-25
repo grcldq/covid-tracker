@@ -1,5 +1,13 @@
-import React, { useRef, useEffect } from 'react';
-import { Card, Image, Label, Loader, Table } from 'semantic-ui-react';
+import React, { useRef, useEffect, useState } from 'react';
+import {
+  Button,
+  Card,
+  Icon,
+  Image,
+  Label,
+  Loader,
+  Table,
+} from 'semantic-ui-react';
 import ContinentChart from './ContinentChart';
 
 import { tableHeaders } from '../constants';
@@ -12,6 +20,10 @@ function Content({
   isLoadingRows,
 }) {
   const ref = useRef();
+  const [cardsInfoEnabled, setCardsInfoEnabled] = useState(Array(6).fill(true));
+  const [showCountriesEnabled, setShowCountriesEnabled] = useState(
+    Array(6).fill(false)
+  );
 
   useEffect(() => {
     const observer = new IntersectionObserver(([entry]) => {
@@ -68,20 +80,62 @@ function Content({
     </div>
   );
 
-  // TODO: fix continents card
   const renderContinentsContent = () => (
     <Card.Group itemsPerRow={2}>
-      {data.map(item => (
+      {data.map((item, index) => (
         <Card fluid key={item.continent}>
           <Card.Content>
-            <Card.Header>{item.continent}</Card.Header>
+            <Card.Header className="row space-between">
+              <div style={{ flex: '1' }}>{item.continent} </div>
+              <div>
+                <Button
+                  color="grey"
+                  data-key={index}
+                  onClick={updateCountriesDisplayedState}
+                >
+                  {showCountriesEnabled[index]
+                    ? 'Hide countries'
+                    : 'Show countries'}
+                </Button>
+                <Button
+                  color="blue"
+                  icon
+                  data-key={index}
+                  onClick={updateCardsState}
+                >
+                  <Icon
+                    data-key={index}
+                    onClick={updateCardsState}
+                    name={cardsInfoEnabled[index] ? 'chart bar' : 'info'}
+                  />
+                </Button>
+              </div>
+            </Card.Header>
             <Card.Meta>
-              {/* {item.countries.map((country, index) => (
-                <Label key={index}>{country}</Label>
-              ))} */}
+              {showCountriesEnabled[index] &&
+                item.countries.map((country, index) =>
+                  index === 0 ? country : ` | ${country}`
+                )}
             </Card.Meta>
             <Card.Description>
-              <ContinentChart data={[item.currentStats, item.totalStats]} />
+              {cardsInfoEnabled[index] ? (
+                <Label.Group size="large">
+                  {item.currentStats.map(stat => (
+                    <Label key={stat.title} color={stat.color}>
+                      {stat.title}
+                      <Label.Detail>{stat.value}</Label.Detail>
+                    </Label>
+                  ))}
+                  {item.totalStats.map(stat => (
+                    <Label key={stat.title} color={stat.color}>
+                      {stat.title}
+                      <Label.Detail>{stat.value}</Label.Detail>
+                    </Label>
+                  ))}
+                </Label.Group>
+              ) : (
+                <ContinentChart data={[item.currentStats, item.totalStats]} />
+              )}
             </Card.Description>
           </Card.Content>
         </Card>
@@ -91,6 +145,28 @@ function Content({
 
   const renderContent = () =>
     isCountryView ? renderCountriesContent() : renderContinentsContent();
+
+  const updateCardsState = e => {
+    e.preventDefault();
+
+    const index = e.target.dataset.key;
+    const arrCopy = cardsInfoEnabled.slice();
+
+    arrCopy[index] = !arrCopy[index];
+
+    setCardsInfoEnabled(arrCopy);
+  };
+
+  const updateCountriesDisplayedState = e => {
+    e.preventDefault();
+
+    const index = e.target.dataset.key;
+    const arrCopy = showCountriesEnabled.slice();
+
+    arrCopy[index] = !arrCopy[index];
+
+    setShowCountriesEnabled(arrCopy);
+  };
 
   return (
     <div>

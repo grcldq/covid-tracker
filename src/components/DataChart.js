@@ -1,13 +1,13 @@
 import React from 'react';
 import { Loader } from 'semantic-ui-react';
 import {
-  CartesianGrid,
-  XAxis,
-  Tooltip,
-  Legend,
-  AreaChart,
   Area,
+  AreaChart,
+  CartesianGrid,
+  Legend,
   ResponsiveContainer,
+  Tooltip,
+  XAxis,
 } from 'recharts';
 
 import { formatGlobalChartData } from '../utils';

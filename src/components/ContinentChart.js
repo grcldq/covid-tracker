@@ -1,14 +1,14 @@
 import React from 'react';
 import { Loader } from 'semantic-ui-react';
 import {
-  Tooltip,
-  Legend,
-  BarChart,
   Bar,
+  BarChart,
   CartesianGrid,
+  Label,
+  ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
-  ResponsiveContainer,
 } from 'recharts';
 
 import { formatContinentChartData } from '../utils';
@@ -51,25 +51,31 @@ class ContinentChart extends React.Component {
         <ResponsiveContainer width="100%" height={250}>
           <BarChart data={this.state.currentData}>
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
+            <XAxis dataKey="name">
+              <Label
+                value="Historical Data Today"
+                offset={-2}
+                position="insideBottom"
+              />
+            </XAxis>
             <YAxis />
             <Tooltip />
-            <Legend />
-            <Bar dataKey="critical" fill="#b54e34" />
-            <Bar dataKey="todayCases" fill="#e9a265" />
-            <Bar dataKey="todayDeaths" fill="#520a1e" />
+            <Bar dataKey="population" fill="#b54e34" />
           </BarChart>
         </ResponsiveContainer>
         <ResponsiveContainer width="100%" height={250}>
-          <BarChart data={this.state.totalData} >
+          <BarChart data={this.state.totalData}>
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
+            <XAxis dataKey="name">
+              <Label
+                value="Historical Data (From the beginning)"
+                offset={-2}
+                position="insideBottom"
+              />
+            </XAxis>
             <YAxis />
             <Tooltip />
-            <Legend />
-            <Bar dataKey="cases" fill="#e7b14a" />
-            <Bar dataKey="deaths" fill="#780000" />
-            <Bar dataKey="recoveries" fill="#14755d" />
+            <Bar dataKey="population" fill="#e7b14a" />
           </BarChart>
         </ResponsiveContainer>
       </div>

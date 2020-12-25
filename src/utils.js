@@ -107,11 +107,13 @@ export function formatContinents(data) {
           value: cases,
         },
         {
+          color: 'teal',
           title: 'Recoveries',
           key: 'recoveries',
           value: recovered,
         },
         {
+          color: 'red',
           title: 'Deaths',
           key: 'deaths',
           value: deaths,
@@ -130,12 +132,13 @@ export function formatContinents(data) {
         },
 
         {
-          title: 'Cases',
+          title: 'Cases Today',
           key: 'todayCases',
           value: todayCases,
         },
         {
-          title: 'Deaths',
+          color: 'red',
+          title: 'Deaths Today',
           key: 'todayDeaths',
           value: todayDeaths,
         },
@@ -175,18 +178,20 @@ export function formatContinentChartData(data) {
   const [current, total] = data;
 
   const formatter = data => {
-    let chartObj = {};
+    let charts = [];
 
     Object.entries(data).forEach(([parentKey, parentValue]) => {
-      const { key, value } = parentValue;
+      const { key, title, value } = parentValue;
 
-      chartObj = {
-        ...chartObj,
-        [key]: value,
-      };
+      if (key === 'active') return;
+
+      charts.push({
+        name: title,
+        population: value,
+      });
     });
 
-    formattedData.push([chartObj]);
+    formattedData.push(charts);
   };
 
   return new Promise((resolve, reject) => {
