@@ -6,7 +6,6 @@ export function formatData(data) {
       active,
       cases,
       continent,
-      country,
       countryInfo,
       critical,
       deaths,
@@ -16,11 +15,12 @@ export function formatData(data) {
       todayCases,
       todayDeaths,
       updated,
+      country: name,
     } = item;
 
     formattedData.push({
       updated,
-      country,
+      name,
       continent,
       flag: countryInfo.flag,
       totalStats: [
@@ -88,16 +88,16 @@ export function formatContinents(data) {
       active,
       updated,
       cases,
-      continent,
       critical,
       deaths,
       recovered,
       todayCases,
       todayDeaths,
+      continent: name,
     } = item;
 
     formattedData.push({
-      continent,
+      name,
       countries,
       updated,
       totalStats: [
@@ -199,4 +199,12 @@ export function formatContinentChartData(data) {
     formatter(total);
     resolve(formattedData);
   });
+}
+
+export function filterBySearch(data, text) {
+  const filteredData = data.filter(item =>
+    item.name.toLowerCase().includes(text.toLowerCase())
+  );
+
+  return filteredData;
 }

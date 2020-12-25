@@ -14,7 +14,7 @@ function Header(props) {
           <Icon name="chart line" />
           <Title.Content>COVID-19 Tracker</Title.Content>
         </Title>
-        <Input icon="search" placeholder="Search..." />
+        <Input icon="search" placeholder="Search..." onChange={props.filterSearch} />
       </div>
       <div className="row space-between">
         <div className="col space-between">

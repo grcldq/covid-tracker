@@ -57,10 +57,10 @@ function Content({
         </Table.Header>
         <Table.Body>
           {data.map(item => (
-            <Table.Row key={item.country}>
+            <Table.Row key={item.name}>
               <Table.Cell width={4}>
                 <Image floated="left" size="mini" src={item.flag} />
-                {item.country}
+                {item.name}
               </Table.Cell>
               {item.totalStats.map(statistic => (
                 <Table.Cell
@@ -83,10 +83,10 @@ function Content({
   const renderContinentsContent = () => (
     <Card.Group itemsPerRow={2}>
       {data.map((item, index) => (
-        <Card fluid key={item.continent}>
+        <Card fluid key={item.name}>
           <Card.Content>
             <Card.Header className="row space-between">
-              <div style={{ flex: '1' }}>{item.continent} </div>
+              <div style={{ flex: '1' }}>{item.name} </div>
               <div>
                 <Button
                   color="grey"

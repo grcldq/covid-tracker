@@ -4,7 +4,7 @@ import { Container, Loader } from 'semantic-ui-react';
 import Header from './components/Header';
 import Content from './components/Content';
 import Filter from './components/Filter';
-import { formatContinents, formatData } from './utils';
+import { filterBySearch, formatContinents, formatData } from './utils';
 import { api, pageConfig } from './constants';
 
 import './App.css';
@@ -17,14 +17,16 @@ class App extends React.Component {
 
     this.state = {
       data: [],
+      filter: 'countries',
+      filteredData: [],
       globalStats: [],
+      isCountryView: true,
       isFetchingData: true,
       isFetchingGlobalStats: true,
       isLoadingMoreData: false,
-      isCountryView: true,
-      filter: 'countries',
+      search: '',
+      searchFilteredData: [],
       sort: 'cases',
-      filteredData: [],
     };
   }
 
@@ -45,7 +47,10 @@ class App extends React.Component {
           <Loader active />
         ) : (
           <div>
-            <Header data={this.state.globalStats} />
+            <Header
+              data={this.state.globalStats}
+              filterSearch={this.handleSearch}
+            />
             <Filter
               updated={this.state.data[0] && this.state.data[0].updated}
               filter={this.state.filter}
@@ -66,6 +71,7 @@ class App extends React.Component {
 
   bindHandlers() {
     this.handleFilterChange = this.handleFilterChange.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
     this.loadMoreRows = this.loadMoreRows.bind(this);
   }
 
@@ -113,23 +119,52 @@ class App extends React.Component {
     this.fetchData(value);
   }
 
+  handleSearch(e) {
+    e.preventDefault();
+
+    const searchText = e.target.value;
+    const rowCount =
+      searchText.length === 1
+        ? NUMBER_OF_ROWS
+        : this.state.filteredData.length + NUMBER_OF_ROWS;
+    const searchFilteredData = filterBySearch(this.state.data, searchText);
+    const filteredData = searchFilteredData.slice(0, rowCount);
+
+    this.setState({ searchFilteredData, filteredData, search: searchText });
+  }
+
   loadMoreRows() {
-    if (
-      !this.state.isCountryView ||
-      this.state.filteredData.length === this.state.data.length
-    ) {
+    const {
+      isCountryView,
+      filteredData,
+      search,
+      searchFilteredData,
+      data,
+    } = this.state;
+
+    // return if continents view
+    if (!isCountryView || filteredData.length === data.length) {
       return;
     }
 
+    // return if filtered length doesn't need more loading
+    if (
+      (search && searchFilteredData.length <= NUMBER_OF_ROWS) ||
+      (search && searchFilteredData.length === filteredData.length)
+    )
+      return;
+
     this.setState({ isLoadingMoreData: true });
 
-    const filteredData = this.state.data.slice(
-      0,
-      this.state.filteredData.length + NUMBER_OF_ROWS
-    );
+    const updatedFilteredData = search
+      ? searchFilteredData.slice(0, filteredData.length + NUMBER_OF_ROWS)
+      : data.slice(0, filteredData.length + NUMBER_OF_ROWS);
 
     setTimeout(() => {
-      this.setState({ filteredData, isLoadingMoreData: false });
+      this.setState({
+        filteredData: updatedFilteredData,
+        isLoadingMoreData: false,
+      });
     }, 1000);
   }
 
