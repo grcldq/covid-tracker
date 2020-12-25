@@ -1,4 +1,7 @@
 const api = 'https://corona.lmao.ninja/v2/';
+const pageConfig = {
+  NUMBER_OF_ROWS: 35,
+};
 const filterOptions = [
   { key: 1, text: 'Countries', value: 'countries' },
   { key: 2, text: 'Continents', value: 'continents' },
@@ -36,4 +39,4 @@ const tableHeaders = [
   ],
 ];
 
-export { api, filterOptions, tableHeaders };
+export { api, filterOptions, pageConfig, tableHeaders };

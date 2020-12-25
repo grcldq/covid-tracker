@@ -37,6 +37,11 @@ function Header(props) {
               <Title.Content>Global Statistics</Title.Content>
             </Title>
             <GlobalStats
+              color="black"
+              title="Tests Conducted"
+              total={dailyStats.tests}
+            />
+            <GlobalStats
               color="yellow"
               title="Cases"
               total={dailyStats.cases}
@@ -46,17 +51,12 @@ function Header(props) {
               title="Recovered"
               total={dailyStats.recovered}
             />
-            <GlobalStats color="red" title="Deaths" total={dailyStats.deaths} />
             <GlobalStats
               color="grey"
-              title="Tests Conducted"
-              total={dailyStats.tests}
-            />
-            <GlobalStats
-              color="black"
               title="Active"
               total={dailyStats.active}
             />
+            <GlobalStats color="red" title="Deaths" total={dailyStats.deaths} />
             <GlobalStats
               color="orange"
               title="Critical"

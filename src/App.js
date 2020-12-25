@@ -5,19 +5,23 @@ import Header from './components/Header';
 import Content from './components/Content';
 import Filter from './components/Filter';
 import { formatContinents, formatData } from './utils';
-import { api } from './constants';
+import { api, pageConfig } from './constants';
 
 import './App.css';
+
+const { NUMBER_OF_ROWS } = pageConfig;
 
 class App extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      data: Array(9).fill(null),
+      data: [],
       globalStats: [],
       isFetchingData: true,
       isFetchingGlobalStats: true,
+      isLoadingMoreData: false,
+      isCountryView: true,
       filter: 'countries',
       sort: 'cases',
       filteredData: [],
@@ -48,13 +52,11 @@ class App extends React.Component {
               filtersChange={this.handleFilterChange}
             />
             <Content
-              data={
-                this.state.filteredData.length > 0
-                  ? this.state.filteredData
-                  : this.state.data
-              }
+              data={this.state.filteredData}
               loading={this.state.isFetchingData}
-              isCountryView={this.state.filter === 'countries'}
+              loadMoreRows={this.loadMoreRows}
+              isCountryView={this.state.isCountryView}
+              isLoadingRows={this.state.isLoadingMoreData}
             />
           </div>
         )}
@@ -64,6 +66,7 @@ class App extends React.Component {
 
   bindHandlers() {
     this.handleFilterChange = this.handleFilterChange.bind(this);
+    this.loadMoreRows = this.loadMoreRows.bind(this);
   }
 
   fetchData(filter = this.state.filter) {
@@ -72,12 +75,14 @@ class App extends React.Component {
     fetch(`${api}${filter}?sort=${sort}`)
       .then(response => response.json())
       .then(responseData => {
-        const data =
-          filter === 'countries'
-            ? formatData(responseData)
-            : formatContinents(responseData);
+        const data = this.state.isCountryView
+          ? formatData(responseData)
+          : formatContinents(responseData);
+        const filteredData = this.state.isCountryView
+          ? data.slice(0, NUMBER_OF_ROWS)
+          : data;
 
-        this.setState({ data });
+        this.setState({ data, filteredData });
       })
       .catch(() => {})
       .finally(() => this.toggleDataLoading());
@@ -103,9 +108,29 @@ class App extends React.Component {
   handleFilterChange(e, { value }) {
     e.preventDefault();
 
-    this.setState({ filter: value });
+    this.setState({ isCountryView: value === 'countries', filter: value });
     this.toggleDataLoading();
     this.fetchData(value);
+  }
+
+  loadMoreRows() {
+    if (
+      !this.state.isCountryView ||
+      this.state.filteredData.length === this.state.data.length
+    ) {
+      return;
+    }
+
+    this.setState({ isLoadingMoreData: true });
+
+    const filteredData = this.state.data.slice(
+      0,
+      this.state.filteredData.length + NUMBER_OF_ROWS
+    );
+
+    setTimeout(() => {
+      this.setState({ filteredData, isLoadingMoreData: false });
+    }, 1000);
   }
 
   toggleDataLoading() {
