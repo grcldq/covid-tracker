@@ -92,7 +92,7 @@ class App extends React.Component {
     let globalStats = [];
 
     Promise.all(
-      [`${api}all`, `${api}historical/all?lastdays=20`].map(url =>
+      [`${api}all`, `${api}historical/all?lastdays=200`].map(url =>
         fetch(url).then(response => response.json())
       )
     )

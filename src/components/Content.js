@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from 'react';
-import { Card, Image, Loader, Table } from 'semantic-ui-react';
+import { Card, Image, Label, Loader, Table } from 'semantic-ui-react';
+import ContinentChart from './ContinentChart';
 
 import { tableHeaders } from '../constants';
 
@@ -75,11 +76,13 @@ function Content({
           <Card.Content>
             <Card.Header>{item.continent}</Card.Header>
             <Card.Meta>
-              {item.countries.map((country, index) =>
-                index === 0 ? country : ` | ${country}`
-              )}
+              {/* {item.countries.map((country, index) => (
+                <Label key={index}>{country}</Label>
+              ))} */}
             </Card.Meta>
-            <Card.Description></Card.Description>
+            <Card.Description>
+              <ContinentChart data={[item.currentStats, item.totalStats]} />
+            </Card.Description>
           </Card.Content>
         </Card>
       ))}

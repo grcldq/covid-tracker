@@ -146,9 +146,9 @@ export function formatContinents(data) {
   return formattedData;
 }
 
-export function formatChartData(data) {
-  const formattedData = Array(20).fill({});
-  
+export function formatGlobalChartData(data) {
+  const formattedData = [];
+
   return new Promise((resolve, reject) => {
     Object.entries(data).forEach(([parentKey, value]) => {
       Object.entries(value).forEach(([key, value], index) => {
@@ -165,29 +165,33 @@ export function formatChartData(data) {
         };
       });
     });
-    
+
     resolve(formattedData);
   });
 }
 
-// export function formatChartData(data) {
-//   const formattedData = Array(20).fill({});
+export function formatContinentChartData(data) {
+  const formattedData = [];
+  const [current, total] = data;
 
-//   Object.entries(data).forEach(([parentKey, value]) => {
-//     Object.entries(value).forEach(([key, value], index) => {
-//       const date = new Date(key);
-//       const formattedDateString = `${date.toLocaleString('default', {
-//         month: 'short',
-//       })} ${date.getDate()}`;
+  const formatter = data => {
+    let chartObj = {};
 
-//       formattedData[index] = {
-//         ...formattedData[index],
-//         date: formattedDateString,
-//         name: key,
-//         [parentKey]: value,
-//       };
-//     });
-//   });
+    Object.entries(data).forEach(([parentKey, parentValue]) => {
+      const { key, value } = parentValue;
 
-//   return formattedData;
-// }
+      chartObj = {
+        ...chartObj,
+        [key]: value,
+      };
+    });
+
+    formattedData.push([chartObj]);
+  };
+
+  return new Promise((resolve, reject) => {
+    formatter(current);
+    formatter(total);
+    resolve(formattedData);
+  });
+}
