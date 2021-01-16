@@ -191,6 +191,8 @@ export function formatContinentChartData(data) {
       });
     });
 
+    console.log(formattedData);
+
     formattedData.push(charts);
   };
 
@@ -207,4 +209,16 @@ export function filterBySearch(data, text) {
   );
 
   return filteredData;
+}
+
+export function filterByContinent(data, continent) {
+  const filteredData = data.filter(
+    item => item.continent && formatContinentName(item.continent) === continent
+  );
+
+  return filteredData;
+}
+
+export function formatContinentName(continent) {
+  return continent.replace(/\s+/g, '').toLowerCase();
 }

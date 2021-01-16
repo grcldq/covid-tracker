@@ -1,11 +1,31 @@
 import { Grid, Input, Icon, Header as Title } from 'semantic-ui-react';
 
 import GlobalStats from './GlobalStats';
+import ContinentChart from './ContinentChart';
 import DataChart from './DataChart';
 import './Header.css';
 
 function Header(props) {
-  const [dailyStats, statsHistory] = props.data;
+  let stats = 0,
+    statsHistory;
+
+  if (props.filteredByContinent) {
+    const { currentStats, totalStats } = props.data[0];
+
+    stats = {
+      active: currentStats[0].value,
+      cases: totalStats[0].value,
+      critical: currentStats[1].value,
+      deaths: totalStats[2].value,
+      recovered: totalStats[1].value,
+      tests: 'n/a -',
+    };
+  } else {
+    const [currentStats, totalStats] = props.data;
+
+    stats = currentStats;
+    statsHistory = totalStats;
+  }
 
   return (
     <div className="Header">
@@ -14,7 +34,11 @@ function Header(props) {
           <Icon name="chart line" />
           <Title.Content>COVID-19 Tracker</Title.Content>
         </Title>
-        <Input icon="search" placeholder="Search..." onChange={props.filterSearch} />
+        <Input
+          icon="search"
+          placeholder="Search..."
+          onChange={props.filterSearch}
+        />
       </div>
       <div className="row space-between">
         <div className="col space-between">
@@ -34,37 +58,38 @@ function Header(props) {
           </div>
           <Grid columns={1} stackable padded="vertically">
             <Title as="h2" style={{ paddingBottom: '.5rem' }}>
-              <Title.Content>Global Statistics</Title.Content>
+              <Title.Content>
+                {props.filteredByContinent
+                  ? props.data[0].name
+                  : 'Global Statistics'}{' '}
+              </Title.Content>
             </Title>
             <GlobalStats
               color="black"
               title="Tests Conducted"
-              total={dailyStats.tests}
+              total={stats.tests}
             />
-            <GlobalStats
-              color="yellow"
-              title="Cases"
-              total={dailyStats.cases}
-            />
+            <GlobalStats color="yellow" title="Cases" total={stats.cases} />
             <GlobalStats
               color="olive"
               title="Recovered"
-              total={dailyStats.recovered}
+              total={stats.recovered}
             />
-            <GlobalStats
-              color="grey"
-              title="Active"
-              total={dailyStats.active}
-            />
-            <GlobalStats color="red" title="Deaths" total={dailyStats.deaths} />
+            <GlobalStats color="grey" title="Active" total={stats.active} />
+            <GlobalStats color="red" title="Deaths" total={stats.deaths} />
             <GlobalStats
               color="orange"
               title="Critical"
-              total={dailyStats.critical}
+              total={stats.critical}
             />
           </Grid>
         </div>
-        <DataChart data={statsHistory} />
+        {props.filteredByContinent ? (
+          //todo: not working
+          <ContinentChart data={[props.data[0].currentStats, props.data[0].totalStats]} />
+        ) : (
+          <DataChart data={statsHistory} />
+        )}
       </div>
     </div>
   );

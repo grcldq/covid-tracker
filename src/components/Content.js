@@ -18,6 +18,7 @@ function Content({
   loading,
   isCountryView,
   isLoadingRows,
+  handleCountriesOfContinentClick,
 }) {
   const ref = useRef();
   const [cardsInfoEnabled, setCardsInfoEnabled] = useState(Array(6).fill(true));
@@ -81,7 +82,7 @@ function Content({
   );
 
   const renderContinentsContent = () => (
-    <Card.Group itemsPerRow={2}>
+    <Card.Group itemsPerRow={2} doubling>
       {data.map((item, index) => (
         <Card fluid key={item.name}>
           <Card.Content>
@@ -91,6 +92,7 @@ function Content({
                 <Button
                   color="grey"
                   data-key={index}
+                  data-continent={item.name}
                   onClick={updateCountriesDisplayedState}
                 >
                   {showCountriesEnabled[index]
@@ -157,16 +159,7 @@ function Content({
     setCardsInfoEnabled(arrCopy);
   };
 
-  const updateCountriesDisplayedState = e => {
-    e.preventDefault();
-
-    const index = e.target.dataset.key;
-    const arrCopy = showCountriesEnabled.slice();
-
-    arrCopy[index] = !arrCopy[index];
-
-    setShowCountriesEnabled(arrCopy);
-  };
+  const updateCountriesDisplayedState = e => handleCountriesOfContinentClick(e);
 
   return (
     <div>

@@ -4,7 +4,13 @@ import { Container, Loader } from 'semantic-ui-react';
 import Header from './components/Header';
 import Content from './components/Content';
 import Filter from './components/Filter';
-import { filterBySearch, formatContinents, formatData } from './utils';
+import {
+  filterByContinent,
+  filterBySearch,
+  formatContinents,
+  formatContinentName,
+  formatData,
+} from './utils';
 import { api, pageConfig } from './constants';
 
 import './App.css';
@@ -16,11 +22,13 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      data: [],
+      countryData: [],
+      continentsData: [],
       filter: 'countries',
       filteredData: [],
       globalStats: [],
       isCountryView: true,
+      isFilteredByContinent: false,
       isFetchingData: true,
       isFetchingGlobalStats: true,
       isLoadingMoreData: false,
@@ -48,13 +56,23 @@ class App extends React.Component {
         ) : (
           <div>
             <Header
-              data={this.state.globalStats}
+              data={
+                this.state.isFilteredByContinent
+                  ? this.state.continentsData.filter(
+                      item => this.state.filteredData[0].continent === item.name
+                    )
+                  : this.state.globalStats
+              }
+              filteredByContinent={this.state.isFilteredByContinent}
               filterSearch={this.handleSearch}
             />
             <Filter
-              updated={this.state.data[0] && this.state.data[0].updated}
+              updated={
+                this.state.countryData[0] && this.state.countryData[0].updated
+              }
               filter={this.state.filter}
               filtersChange={this.handleFilterChange}
+              filteredByContinent={this.state.isFilteredByContinent}
             />
             <Content
               data={this.state.filteredData}
@@ -62,6 +80,7 @@ class App extends React.Component {
               loadMoreRows={this.loadMoreRows}
               isCountryView={this.state.isCountryView}
               isLoadingRows={this.state.isLoadingMoreData}
+              handleCountriesOfContinentClick={this.displayContinentCountries}
             />
           </div>
         )}
@@ -70,28 +89,40 @@ class App extends React.Component {
   }
 
   bindHandlers() {
+    this.displayContinentCountries = this.displayContinentCountries.bind(this);
     this.handleFilterChange = this.handleFilterChange.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
     this.loadMoreRows = this.loadMoreRows.bind(this);
   }
 
-  fetchData(filter = this.state.filter) {
+  displayContinentCountries(e) {
+    const continent = e && formatContinentName(e.target.dataset.continent);
+
+    this.handleFilterChange(e, { continent, value: 'countries' });
+  }
+
+  fetchData() {
     const { sort } = this.state;
 
-    fetch(`${api}${filter}?sort=${sort}`)
+    fetch(`${api}countries?sort=${sort}`)
       .then(response => response.json())
       .then(responseData => {
-        const data = this.state.isCountryView
-          ? formatData(responseData)
-          : formatContinents(responseData);
-        const filteredData = this.state.isCountryView
-          ? data.slice(0, NUMBER_OF_ROWS)
-          : data;
+        const data = formatData(responseData);
+        const filteredData = data.slice(0, NUMBER_OF_ROWS);
 
-        this.setState({ data, filteredData });
+        this.setState({ countryData: data, filteredData });
       })
       .catch(() => {})
       .finally(() => this.toggleDataLoading());
+
+    fetch(`${api}continents?sort=${sort}`)
+      .then(response => response.json())
+      .then(responseData => {
+        const data = formatContinents(responseData);
+
+        this.setState({ continentsData: data, filteredData: data });
+      })
+      .catch(() => {});
   }
 
   fetchGlobalData() {
@@ -111,12 +142,26 @@ class App extends React.Component {
       });
   }
 
-  handleFilterChange(e, { value }) {
+  handleFilterChange(e, { continent, value }) {
     e.preventDefault();
 
-    this.setState({ isCountryView: value === 'countries', filter: value });
-    this.toggleDataLoading();
-    this.fetchData(value);
+    const isCountryView = value === 'countries';
+    let filteredData = [];
+
+    if (isCountryView) {
+      filteredData = continent
+        ? filterByContinent(this.state.countryData, continent)
+        : this.state.countryData.slice(0, NUMBER_OF_ROWS);
+    } else {
+      filteredData = this.state.continentsData;
+    }
+
+    this.setState({
+      isCountryView,
+      filteredData,
+      filter: value,
+      isFilteredByContinent: continent,
+    });
   }
 
   handleSearch(e) {
@@ -127,7 +172,12 @@ class App extends React.Component {
       searchText.length === 1
         ? NUMBER_OF_ROWS
         : this.state.filteredData.length + NUMBER_OF_ROWS;
-    const searchFilteredData = filterBySearch(this.state.data, searchText);
+    const searchFilteredData = filterBySearch(
+      this.state.isCountryView
+        ? this.state.countryData
+        : this.state.continentsData,
+      searchText
+    );
     const filteredData = searchFilteredData.slice(0, rowCount);
 
     this.setState({ searchFilteredData, filteredData, search: searchText });
@@ -139,11 +189,17 @@ class App extends React.Component {
       filteredData,
       search,
       searchFilteredData,
-      data,
+      countryData,
+      continentsData,
+      isFilteredByContinent,
     } = this.state;
 
     // return if continents view
-    if (!isCountryView || filteredData.length === data.length) {
+    if (
+      !isCountryView ||
+      isFilteredByContinent ||
+      filteredData.length === continentsData.length
+    ) {
       return;
     }
 
@@ -158,7 +214,7 @@ class App extends React.Component {
 
     const updatedFilteredData = search
       ? searchFilteredData.slice(0, filteredData.length + NUMBER_OF_ROWS)
-      : data.slice(0, filteredData.length + NUMBER_OF_ROWS);
+      : countryData.slice(0, filteredData.length + NUMBER_OF_ROWS);
 
     setTimeout(() => {
       this.setState({

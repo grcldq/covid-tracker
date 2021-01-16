@@ -32,6 +32,8 @@ class ContinentChart extends React.Component {
       .then(data => {
         currentData = data[0];
         totalData = data[1];
+
+        console.log(data);
       })
       .catch(e => {
         // TODO: error handling
