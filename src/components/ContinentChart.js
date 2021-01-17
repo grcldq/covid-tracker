@@ -46,9 +46,14 @@ class ContinentChart extends React.Component {
       return <Loader active />;
     }
 
+    const displayHorizontal = this.props.row ? true : false;
+
     return (
-      <div style={this.props.row ? { display: 'flex', flex: 1 } : ''}>
-        <ResponsiveContainer width="100%" height={this.props.row ? 300 : 250}>
+      <div style={displayHorizontal ? { display: 'flex', flex: 1 } : {}}>
+        <ResponsiveContainer
+          width="100%"
+          height={displayHorizontal ? 300 : 250}
+        >
           <BarChart data={this.state.currentData}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name">
@@ -63,7 +68,10 @@ class ContinentChart extends React.Component {
             <Bar dataKey="population" fill="#b54e34" />
           </BarChart>
         </ResponsiveContainer>
-        <ResponsiveContainer width="100%" height={this.props.row ? 300 : 250}>
+        <ResponsiveContainer
+          width="100%"
+          height={displayHorizontal ? 300 : 250}
+        >
           <BarChart data={this.state.totalData}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name">
