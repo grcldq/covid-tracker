@@ -191,8 +191,6 @@ export function formatContinentChartData(data) {
       });
     });
 
-    console.log(formattedData);
-
     formattedData.push(charts);
   };
 

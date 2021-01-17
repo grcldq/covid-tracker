@@ -32,8 +32,6 @@ class ContinentChart extends React.Component {
       .then(data => {
         currentData = data[0];
         totalData = data[1];
-
-        console.log(data);
       })
       .catch(e => {
         // TODO: error handling
@@ -49,7 +47,7 @@ class ContinentChart extends React.Component {
     }
 
     return (
-      <div>
+      <div style={this.props.row ? { display: 'flex', flex: 1 } : ''}>
         <ResponsiveContainer width="100%" height={250}>
           <BarChart data={this.state.currentData}>
             <CartesianGrid strokeDasharray="3 3" />

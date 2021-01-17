@@ -45,7 +45,13 @@ class App extends React.Component {
   }
 
   componentWillUnmount() {
-    this.setState({ globalStats: {} });
+    this.setState({
+      continentsData: [],
+      countryData: [],
+      globalStats: {},
+      isCountryView: true,
+      isFilteredByContinent: false,
+    });
   }
 
   render() {

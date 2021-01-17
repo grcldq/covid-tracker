@@ -85,8 +85,10 @@ function Header(props) {
           </Grid>
         </div>
         {props.filteredByContinent ? (
-          //todo: not working
-          <ContinentChart data={[props.data[0].currentStats, props.data[0].totalStats]} />
+          <ContinentChart
+            data={[props.data[0].currentStats, props.data[0].totalStats]}
+            row={true}
+          />
         ) : (
           <DataChart data={statsHistory} />
         )}
