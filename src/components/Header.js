@@ -1,4 +1,4 @@
-import { Grid, Input, Icon, Header as Title } from 'semantic-ui-react';
+import { Divider, Grid, Input, Icon, Header as Title } from 'semantic-ui-react';
 
 import GlobalStats from './GlobalStats';
 import ContinentChart from './ContinentChart';
@@ -34,28 +34,29 @@ function Header(props) {
           <Icon name="chart line" />
           <Title.Content>COVID-19 Tracker</Title.Content>
         </Title>
+        <div style={{ flex: 1 }}>
+          <a
+            href="https://github.com/grcldq/covid-tracker"
+            target="_blank"
+            style={{
+              display: 'flex',
+              alignContent: 'center',
+              justifyContent: 'flex-end',
+              marginRight: '1rem',
+            }}
+          >
+            <Icon name="github" size="large" />
+          </a>
+        </div>
         <Input
           icon="search"
           placeholder="Search..."
           onChange={props.filterSearch}
         />
       </div>
+      <Divider />
       <div className="row space-between">
-        <div className="col space-between">
-          <div style={{ flex: 1 }}>
-            <a
-              href="https://github.com/grcldq/covid-tracker"
-              target="_blank"
-              style={{
-                display: 'flex',
-                alignContent: 'center',
-                marginTop: '1rem',
-              }}
-            >
-              <Icon name="github" size="large" />
-              <p>GitHub</p>
-            </a>
-          </div>
+        <div className="col space-between" style={{ alignSelf: 'center' }}>
           <Grid columns={1} stackable padded="vertically">
             <Title as="h2" style={{ paddingBottom: '.5rem' }}>
               <Title.Content>
