@@ -203,7 +203,7 @@ export function formatContinentChartData(data) {
 
 export function filterBySearch(data, text) {
   const filteredData = data.filter(item =>
-    item.name.toLowerCase().includes(text.toLowerCase())
+    item.name.toLowerCase().includes(text.trim().toLowerCase())
   );
 
   return filteredData;

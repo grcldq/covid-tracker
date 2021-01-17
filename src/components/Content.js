@@ -40,7 +40,7 @@ function Content({
   //TODO: sort table
   const renderCountriesContent = () => (
     <div>
-      <Table celled selectable>
+      <Table selectable>
         <Table.Header>
           {tableHeaders.map((headers, index) => (
             <Table.Row key={index}>
@@ -57,24 +57,30 @@ function Content({
           ))}
         </Table.Header>
         <Table.Body>
-          {data.map(item => (
-            <Table.Row key={item.name}>
-              <Table.Cell width={4}>
-                <Image floated="left" size="mini" src={item.flag} />
-                {item.name}
-              </Table.Cell>
-              {item.totalStats.map(statistic => (
-                <Table.Cell
-                  key={statistic.key}
-                  negative={statistic.key === 'deaths'}
-                  positive={statistic.key === 'recoveries'}
-                  warning={statistic.key === 'cases'}
-                >
-                  {statistic.value.toLocaleString()}
+          {data.length > 0 ? (
+            data.map(item => (
+              <Table.Row key={item.name}>
+                <Table.Cell width={4}>
+                  <Image floated="left" size="mini" src={item.flag} />
+                  {item.name}
                 </Table.Cell>
-              ))}
+                {item.totalStats.map(statistic => (
+                  <Table.Cell
+                    key={statistic.key}
+                    negative={statistic.key === 'deaths'}
+                    positive={statistic.key === 'recoveries'}
+                    warning={statistic.key === 'cases'}
+                  >
+                    {statistic.value.toLocaleString()}
+                  </Table.Cell>
+                ))}
+              </Table.Row>
+            ))
+          ) : (
+            <Table.Row>
+              <Table.Cell>No results found.</Table.Cell>
             </Table.Row>
-          ))}
+          )}
         </Table.Body>
       </Table>
       {isLoadingRows ? <Loader active inline="centered" /> : ''}
@@ -82,66 +88,74 @@ function Content({
   );
 
   const renderContinentsContent = () => (
-    <Card.Group itemsPerRow={2} doubling>
-      {data.map((item, index) => (
-        <Card fluid key={item.name}>
-          <Card.Content>
-            <Card.Header className="row space-between">
-              <div style={{ flex: '1' }}>{item.name} </div>
-              <div>
-                <Button
-                  color="grey"
-                  data-key={index}
-                  data-continent={item.name}
-                  onClick={updateCountriesDisplayedState}
-                >
-                  {showCountriesEnabled[index]
-                    ? 'Hide countries'
-                    : 'Show countries'}
-                </Button>
-                <Button
-                  color="blue"
-                  icon
-                  data-key={index}
-                  onClick={updateCardsState}
-                >
-                  <Icon
+    <Card.Group itemsPerRow={data.length > 0 ? 2 : 1} doubling>
+      {data.length > 0 ? (
+        data.map((item, index) => (
+          <Card fluid key={item.name}>
+            <Card.Content>
+              <Card.Header className="row space-between">
+                <div style={{ flex: '1' }}>{item.name} </div>
+                <div>
+                  <Button
+                    color="grey"
+                    data-key={index}
+                    data-continent={item.name}
+                    onClick={updateCountriesDisplayedState}
+                  >
+                    {showCountriesEnabled[index]
+                      ? 'Hide countries'
+                      : 'Show countries'}
+                  </Button>
+                  <Button
+                    color="blue"
+                    icon
                     data-key={index}
                     onClick={updateCardsState}
-                    name={cardsInfoEnabled[index] ? 'chart bar' : 'info'}
-                  />
-                </Button>
-              </div>
-            </Card.Header>
-            <Card.Meta>
-              {showCountriesEnabled[index] &&
-                item.countries.map((country, index) =>
-                  index === 0 ? country : ` | ${country}`
+                  >
+                    <Icon
+                      data-key={index}
+                      onClick={updateCardsState}
+                      name={cardsInfoEnabled[index] ? 'chart bar' : 'info'}
+                    />
+                  </Button>
+                </div>
+              </Card.Header>
+              <Card.Meta>
+                {showCountriesEnabled[index] &&
+                  item.countries.map((country, index) =>
+                    index === 0 ? country : ` | ${country}`
+                  )}
+              </Card.Meta>
+              <Card.Description>
+                {cardsInfoEnabled[index] ? (
+                  <Label.Group size="large">
+                    {item.currentStats.map(stat => (
+                      <Label key={stat.title} color={stat.color}>
+                        {stat.title}
+                        <Label.Detail>{stat.value}</Label.Detail>
+                      </Label>
+                    ))}
+                    {item.totalStats.map(stat => (
+                      <Label key={stat.title} color={stat.color}>
+                        {stat.title}
+                        <Label.Detail>{stat.value}</Label.Detail>
+                      </Label>
+                    ))}
+                  </Label.Group>
+                ) : (
+                  <ContinentChart data={[item.currentStats, item.totalStats]} />
                 )}
-            </Card.Meta>
-            <Card.Description>
-              {cardsInfoEnabled[index] ? (
-                <Label.Group size="large">
-                  {item.currentStats.map(stat => (
-                    <Label key={stat.title} color={stat.color}>
-                      {stat.title}
-                      <Label.Detail>{stat.value}</Label.Detail>
-                    </Label>
-                  ))}
-                  {item.totalStats.map(stat => (
-                    <Label key={stat.title} color={stat.color}>
-                      {stat.title}
-                      <Label.Detail>{stat.value}</Label.Detail>
-                    </Label>
-                  ))}
-                </Label.Group>
-              ) : (
-                <ContinentChart data={[item.currentStats, item.totalStats]} />
-              )}
-            </Card.Description>
-          </Card.Content>
+              </Card.Description>
+            </Card.Content>
+          </Card>
+        ))
+      ) : (
+        <Card>
+          <Card.Description textAlign="center" style={{ padding: '4rem 0' }}>
+            <p>No results found.</p>
+          </Card.Description>
         </Card>
-      ))}
+      )}
     </Card.Group>
   );
 

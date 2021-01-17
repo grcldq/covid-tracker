@@ -25,6 +25,7 @@ class App extends React.Component {
       countryData: [],
       continentsData: [],
       filter: 'countries',
+      filteredContinent: '',
       filteredData: [],
       globalStats: [],
       isCountryView: true,
@@ -65,7 +66,7 @@ class App extends React.Component {
               data={
                 this.state.isFilteredByContinent
                   ? this.state.continentsData.filter(
-                      item => this.state.filteredData[0].continent === item.name
+                      item => this.state.filteredContinent === item.name
                     )
                   : this.state.globalStats
               }
@@ -163,9 +164,10 @@ class App extends React.Component {
     }
 
     this.setState({
-      isCountryView,
-      filteredData,
       filter: value,
+      filteredContinent: filteredData[0].continent,
+      filteredData,
+      isCountryView,
       isFilteredByContinent: continent,
     });
   }
@@ -178,12 +180,15 @@ class App extends React.Component {
       searchText.length === 1
         ? NUMBER_OF_ROWS
         : this.state.filteredData.length + NUMBER_OF_ROWS;
-    const searchFilteredData = filterBySearch(
-      this.state.isCountryView
-        ? this.state.countryData
-        : this.state.continentsData,
-      searchText
-    );
+    let data = this.state.isCountryView
+      ? this.state.countryData
+      : this.state.continentsData;
+
+    if (this.state.isFilteredByContinent) {
+      data = this.state.filteredData;
+    }
+
+    const searchFilteredData = filterBySearch(data, searchText);
     const filteredData = searchFilteredData.slice(0, rowCount);
 
     this.setState({ searchFilteredData, filteredData, search: searchText });
