@@ -4,12 +4,14 @@ import { Container, Loader } from 'semantic-ui-react';
 import Header from './components/Header';
 import Content from './components/Content';
 import Filter from './components/Filter';
+import Footer from './components/Footer';
 import {
   filterByContinent,
   filterBySearch,
   formatContinents,
   formatContinentName,
   formatData,
+  sortTable,
 } from './utils';
 import { api, pageConfig } from './constants';
 
@@ -36,6 +38,7 @@ class App extends React.Component {
       search: '',
       searchFilteredData: [],
       sort: 'cases',
+      sortDirection: 'descending',
     };
   }
 
@@ -57,9 +60,9 @@ class App extends React.Component {
 
   render() {
     return (
-      <Container>
+      <Container data-cy="container">
         {this.state.isFetchingGlobalStats ? (
-          <Loader active />
+          <Loader active data-cy="loader" />
         ) : (
           <div>
             <Header
@@ -88,9 +91,13 @@ class App extends React.Component {
               isCountryView={this.state.isCountryView}
               isLoadingRows={this.state.isLoadingMoreData}
               handleCountriesOfContinentClick={this.displayContinentCountries}
+              handleSort={this.handleSort}
+              sort={this.state.sort}
+              sortDirection={this.state.sortDirection}
             />
           </div>
         )}
+        <Footer />
       </Container>
     );
   }
@@ -99,6 +106,7 @@ class App extends React.Component {
     this.displayContinentCountries = this.displayContinentCountries.bind(this);
     this.handleFilterChange = this.handleFilterChange.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
+    this.handleSort = this.handleSort.bind(this);
     this.loadMoreRows = this.loadMoreRows.bind(this);
   }
 
@@ -192,6 +200,16 @@ class App extends React.Component {
     const filteredData = searchFilteredData.slice(0, rowCount);
 
     this.setState({ searchFilteredData, filteredData, search: searchText });
+  }
+
+  handleSort(sort) {
+    let sortDirection = this.state.sortDirection;
+  
+    if (sort === this.state.sort) {
+      sortDirection = this.state.sort === 'ascending' ? 'descending' : 'ascending';
+    }
+
+    sortTable(this.state.filteredData, sort, sortDirection);
   }
 
   loadMoreRows() {

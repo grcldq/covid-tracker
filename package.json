@@ -8,6 +8,7 @@
     "materialize-css": "^1.0.0-rc.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "react-responsive": "^8.2.0",
     "react-scripts": "4.0.1",
     "recharts": "^1.8.5",
     "semantic-ui-css": "^2.4.1",
@@ -17,14 +18,15 @@
   "devDependencies": {
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
-    "@testing-library/user-event": "^12.1.10"
+    "@testing-library/user-event": "^12.1.10",
+    "cypress": "^5.1.0"
   },
   "scripts": {
     "start": "react-scripts start",
-    "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "react-scripts build",
-    "deploy": "gh-pages -b master -d build"
+    "deploy": "gh-pages -b master -d build",
+    "cypress": "npm run start && npx cypress open"
   },
   "eslintConfig": {
     "extends": [

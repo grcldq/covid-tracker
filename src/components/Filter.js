@@ -13,6 +13,7 @@ function Filter(props) {
             labelPosition="left"
             value={props.filter}
             onClick={props.filtersChange}
+            data-cy="backButton"
           >
             <Icon name="arrow left" />
             Go Back
@@ -25,6 +26,7 @@ function Filter(props) {
             value={props.filter}
             options={filterOptions}
             onChange={props.filtersChange}
+            data-cy="filterDropdown"
           />
         )}
       </div>

@@ -220,3 +220,31 @@ export function filterByContinent(data, continent) {
 export function formatContinentName(continent) {
   return continent.replace(/\s+/g, '').toLowerCase();
 }
+
+export function sortTable(data, sortBy, sortDirection) {
+  const sortedData = data.sort((itemA, itemB) => {
+    const { totalStats: statsArrayA } = itemA;
+    const { totalStats: statsArrayB } = itemB;
+    let statsA = 0,
+      statsB = 0;
+
+    statsArrayA.forEach(stat => {
+      if (stat.title.toLowerCase() === sortBy.toLowerCase()) {
+        statsA = stat.value;
+      }
+    });
+
+    statsArrayB.forEach(stat => {
+      if (stat.title.toLowerCase() === sortBy.toLowerCase()) {
+        statsB = stat.value;
+      }
+    });
+
+    console.log(statsB < statsA);
+    return sortDirection === 'ascending' ? statsA < statsB : statsB < statsA;
+  });
+
+  console.log(sortedData);
+
+  return sortedData;
+}

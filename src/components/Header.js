@@ -1,9 +1,10 @@
-import { Divider, Grid, Input, Icon, Header as Title } from 'semantic-ui-react';
+import { Divider, Input, Icon, Header as Title, List } from 'semantic-ui-react';
 
-import GlobalStats from './GlobalStats';
 import ContinentChart from './ContinentChart';
 import DataChart from './DataChart';
 import './Header.css';
+
+import { gitUrl, statsKeys, statsTitle } from '../constants';
 
 function Header(props) {
   let stats = 0,
@@ -27,68 +28,71 @@ function Header(props) {
     statsHistory = totalStats;
   }
 
-  return (
-    <div className="Header">
-      <div className="row space-between">
-        <Title as="h1">
-          <Icon name="chart line" />
-          <Title.Content>COVID-19 Tracker</Title.Content>
-        </Title>
+  const TitleContainer = (
+    <div className="row space-between">
+      <Title as="h2" data-cy="title">
+        <Icon name="chart line" />
+        <Title.Content>COVID-19 Tracker</Title.Content>
+      </Title>
+      <div className="row flex-horizontal">
+        <a
+          href={gitUrl}
+          target="_blank"
+          style={{
+            display: 'flex',
+            alignContent: 'center',
+            justifyContent: 'flex-end',
+            marginRight: '1rem',
+          }}
+        >
+          <Icon name="github" size="large" />
+        </a>
+
         <div style={{ flex: 1 }}>
-          <a
-            href="https://github.com/grcldq/covid-tracker"
-            target="_blank"
-            style={{
-              display: 'flex',
-              alignContent: 'center',
-              justifyContent: 'flex-end',
-              marginRight: '1rem',
-            }}
-          >
-            <Icon name="github" size="large" />
-          </a>
+          <Input
+            icon="search"
+            placeholder="Search..."
+            onChange={props.filterSearch}
+            data-cy="search"
+            fluid
+            style={{ minWidth: '250px' }}
+          />
         </div>
-        <Input
-          icon="search"
-          placeholder="Search..."
-          onChange={props.filterSearch}
-        />
       </div>
+    </div>
+  );
+
+  return (
+    <div className="Header" data-cy="header">
+      {TitleContainer}
       <Divider />
       <div className="row space-between">
-        <div className="col space-between" style={{ alignSelf: 'center' }}>
-          <Grid columns={1} stackable padded="vertically">
-            <Title as="h2" style={{ paddingBottom: '.5rem' }}>
-              <Title.Content>
-                {props.filteredByContinent
-                  ? props.data[0].name
-                  : 'Global Statistics'}{' '}
-              </Title.Content>
-            </Title>
-            <GlobalStats
-              color="black"
-              title="Tests Conducted"
-              total={stats.tests}
-            />
-            <GlobalStats color="yellow" title="Cases" total={stats.cases} />
-            <GlobalStats
-              color="olive"
-              title="Recovered"
-              total={stats.recovered}
-            />
-            <GlobalStats color="grey" title="Active" total={stats.active} />
-            <GlobalStats color="red" title="Deaths" total={stats.deaths} />
-            <GlobalStats
-              color="orange"
-              title="Critical"
-              total={stats.critical}
-            />
-          </Grid>
-        </div>
+        <List divided relaxed>
+          <Title as="h3" style={{ paddingBottom: '.5rem' }}>
+            <Title.Content>
+              {props.filteredByContinent
+                ? props.data[0].name
+                : 'Global Statistics'}{' '}
+            </Title.Content>
+          </Title>
+          {Object.keys(stats).map(key => {
+            if (statsKeys.includes(key)) {
+              return (
+                <List.Item key={key}>
+                  <List.Content>
+                    <List.Header>{statsTitle[key]}</List.Header>
+                    <List.Description>
+                      {stats[key].toLocaleString()}
+                    </List.Description>
+                  </List.Content>
+                </List.Item>
+              );
+            }
+          })}
+        </List>
         {props.filteredByContinent ? (
           <ContinentChart
             data={[props.data[0].currentStats, props.data[0].totalStats]}
-            row={true}
           />
         ) : (
           <DataChart data={statsHistory} />

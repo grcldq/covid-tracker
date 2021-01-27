@@ -19,6 +19,9 @@ function Content({
   isCountryView,
   isLoadingRows,
   handleCountriesOfContinentClick,
+  handleSort,
+  sort,
+  sortDirection,
 }) {
   const ref = useRef();
   const [cardsInfoEnabled, setCardsInfoEnabled] = useState(Array(6).fill(true));
@@ -39,8 +42,8 @@ function Content({
 
   //TODO: sort table
   const renderCountriesContent = () => (
-    <div>
-      <Table selectable>
+    <div data-cy="content">
+      <Table selectable sortable>
         <Table.Header>
           {tableHeaders.map((headers, index) => (
             <Table.Row key={index}>
@@ -49,6 +52,10 @@ function Content({
                   key={item.key}
                   colSpan={item.col}
                   rowSpan={item.row}
+                  onClick={() => handleSort(item.text)}
+                  sorted={
+                    sort === item.text.toLowerCase() ? sortDirection : null
+                  }
                 >
                   {item.text}
                 </Table.HeaderCell>
@@ -56,7 +63,7 @@ function Content({
             </Table.Row>
           ))}
         </Table.Header>
-        <Table.Body>
+        <Table.Body data-cy="tableBody">
           {data.length > 0 ? (
             data.map(item => (
               <Table.Row key={item.name}>
@@ -88,7 +95,11 @@ function Content({
   );
 
   const renderContinentsContent = () => (
-    <Card.Group itemsPerRow={data.length > 0 ? 2 : 1} doubling>
+    <Card.Group
+      itemsPerRow={data.length > 0 ? 2 : 1}
+      doubling
+      data-cy="content"
+    >
       {data.length > 0 ? (
         data.map((item, index) => (
           <Card fluid key={item.name}>

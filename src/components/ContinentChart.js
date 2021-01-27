@@ -1,4 +1,5 @@
 import React from 'react';
+import MediaQuery from 'react-responsive';
 import { Loader } from 'semantic-ui-react';
 import {
   Bar,
@@ -46,46 +47,58 @@ class ContinentChart extends React.Component {
       return <Loader active />;
     }
 
-    const displayHorizontal = this.props.row ? true : false;
+    const chart1 = (
+      <BarChart data={this.state.currentData}>
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="name">
+          <Label
+            value="Historical Data Today"
+            offset={-2}
+            position="insideBottom"
+          />
+        </XAxis>
+        <YAxis />
+        <Tooltip />
+        <Bar dataKey="population" fill="#b54e34" />
+      </BarChart>
+    );
+
+    const chart2 = (
+      <BarChart data={this.state.totalData}>
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="name">
+          <Label
+            value="Historical Data (From the beginning)"
+            offset={-2}
+            position="insideBottom"
+          />
+        </XAxis>
+        <YAxis />
+        <Tooltip />
+        <Bar dataKey="population" fill="#e7b14a" />
+      </BarChart>
+    );
 
     return (
-      <div style={displayHorizontal ? { display: 'flex', flex: 1 } : {}}>
-        <ResponsiveContainer
-          width="100%"
-          height={displayHorizontal ? 300 : 250}
-        >
-          <BarChart data={this.state.currentData}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name">
-              <Label
-                value="Historical Data Today"
-                offset={-2}
-                position="insideBottom"
-              />
-            </XAxis>
-            <YAxis />
-            <Tooltip />
-            <Bar dataKey="population" fill="#b54e34" />
-          </BarChart>
-        </ResponsiveContainer>
-        <ResponsiveContainer
-          width="100%"
-          height={displayHorizontal ? 300 : 250}
-        >
-          <BarChart data={this.state.totalData}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name">
-              <Label
-                value="Historical Data (From the beginning)"
-                offset={-2}
-                position="insideBottom"
-              />
-            </XAxis>
-            <YAxis />
-            <Tooltip />
-            <Bar dataKey="population" fill="#e7b14a" />
-          </BarChart>
-        </ResponsiveContainer>
+      <div>
+        <MediaQuery maxDeviceWidth={1223}>
+          <ResponsiveContainer width="100%" height={200}>
+            {chart1}
+          </ResponsiveContainer>
+          <ResponsiveContainer width="100%" height={200}>
+            {chart2}
+          </ResponsiveContainer>
+        </MediaQuery>
+        <MediaQuery minDeviceWidth={1224}>
+          <div style={{ display: 'flex', flex: 1 }}>
+            <ResponsiveContainer width={450} height={250}>
+              {chart1}
+            </ResponsiveContainer>
+            <ResponsiveContainer width={450} height={250}>
+              {chart2}
+            </ResponsiveContainer>
+          </div>
+        </MediaQuery>
       </div>
     );
   }

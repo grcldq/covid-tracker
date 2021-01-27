@@ -1,4 +1,7 @@
+import { useMediaQuery } from 'react-responsive';
+
 const api = 'https://corona.lmao.ninja/v2/';
+const gitUrl = 'https://github.com/grcldq/covid-tracker';
 const pageConfig = {
   NUMBER_OF_ROWS: 35,
 };
@@ -38,5 +41,37 @@ const tableHeaders = [
     },
   ],
 ];
+const statsKeys = [
+  'active',
+  'cases',
+  'critical',
+  'deaths',
+  'recovered',
+  'tests',
+];
+const statsTitle = {
+  active: 'Active',
+  cases: 'Cases',
+  critical: 'Critical',
+  deaths: 'Deaths',
+  recovered: 'Recovered',
+  tests: 'Tests Conducted',
+};
+const screen = {
+  isDesktopOrLaptop: () =>
+    useMediaQuery({
+      query: '(min-device-width: 1224px)',
+    }),
+  isTabletOrMobile: () => useMediaQuery({ query: '(max-width: 1224px)' }),
+};
 
-export { api, filterOptions, pageConfig, tableHeaders };
+export {
+  api,
+  filterOptions,
+  gitUrl,
+  pageConfig,
+  screen,
+  statsKeys,
+  statsTitle,
+  tableHeaders,
+};
