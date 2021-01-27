@@ -50,9 +50,10 @@ class App extends React.Component {
 
   componentWillUnmount() {
     this.setState({
-      continentsData: [],
       countryData: [],
-      globalStats: {},
+      continentsData: [],
+      filter: 'countries',
+      filteredData: [],
       isCountryView: true,
       isFilteredByContinent: false,
     });
@@ -95,9 +96,9 @@ class App extends React.Component {
               sort={this.state.sort}
               sortDirection={this.state.sortDirection}
             />
+            <Footer />
           </div>
         )}
-        <Footer />
       </Container>
     );
   }
@@ -204,9 +205,10 @@ class App extends React.Component {
 
   handleSort(sort) {
     let sortDirection = this.state.sortDirection;
-  
+
     if (sort === this.state.sort) {
-      sortDirection = this.state.sort === 'ascending' ? 'descending' : 'ascending';
+      sortDirection =
+        this.state.sort === 'ascending' ? 'descending' : 'ascending';
     }
 
     sortTable(this.state.filteredData, sort, sortDirection);
