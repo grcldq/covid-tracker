@@ -26,6 +26,7 @@
     "eject": "react-scripts eject",
     "predeploy": "react-scripts build",
     "deploy": "gh-pages -b master -d build",
+    "git-deploy": "npm run predeploy && npm run deploy",
     "cypress": "npm run start && npx cypress open"
   },
   "eslintConfig": {

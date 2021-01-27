@@ -136,7 +136,7 @@ class App extends React.Component {
       .then(responseData => {
         const data = formatContinents(responseData);
 
-        this.setState({ continentsData: data, filteredData: data });
+        this.setState({ continentsData: data });
       })
       .catch(() => {});
   }
