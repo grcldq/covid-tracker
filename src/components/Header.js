@@ -1,4 +1,12 @@
-import { Divider, Input, Icon, Header as Title, List } from 'semantic-ui-react';
+import {
+  Divider,
+  Grid,
+  Input,
+  Icon,
+  Header as Title,
+  List,
+} from 'semantic-ui-react';
+import { useMediaQuery } from 'react-responsive';
 
 import ContinentChart from './ContinentChart';
 import DataChart from './DataChart';
@@ -9,6 +17,12 @@ import { gitUrl, statsKeys, statsTitle } from '../constants';
 function Header(props) {
   let stats = 0,
     statsHistory;
+  const isDesktopOrLaptop = useMediaQuery({
+    query: '(min-width: 1224px)',
+  });
+  const isTabletOrMobileDevice = useMediaQuery({
+    query: '(max-width: 1223px)',
+  });
 
   if (props.filteredByContinent) {
     const { currentStats, totalStats } = props.data[0];
@@ -62,34 +76,66 @@ function Header(props) {
     </div>
   );
 
+  const mobileSummaryContent = isTabletOrMobileDevice && (
+    <div>
+      <Title as="h3" style={{ paddingBottom: '.5rem' }}>
+        <Title.Content>
+          {props.filteredByContinent ? props.data[0].name : 'Global Statistics'}
+        </Title.Content>
+      </Title>
+      <Grid columns={3} style={{ paddingBottom: '2rem' }}>
+        {Object.keys(stats).map(key => {
+          if (statsKeys.includes(key)) {
+            const color = statsTitle[key].color;
+            const style = color ? { color } : {};
+
+            return (
+              <Grid.Column key={key} style={{ paddingBottom: 0 }}>
+                <b style={style}>{statsTitle[key].title}</b>
+                <br />
+                {stats[key].toLocaleString()}
+              </Grid.Column>
+            );
+          }
+        })}
+      </Grid>
+    </div>
+  );
+
+  const desktopSummaryContent = isDesktopOrLaptop && (
+    <List relaxed>
+      <Title as="h3" style={{ paddingBottom: '.5rem' }}>
+        <Title.Content>
+          {props.filteredByContinent ? props.data[0].name : 'Global Statistics'}
+        </Title.Content>
+      </Title>
+      {Object.keys(stats).map(key => {
+        if (statsKeys.includes(key)) {
+          const color = statsTitle[key].color;
+          const style = color ? { color } : {};
+
+          return (
+            <List.Item key={key}>
+              <List.Content>
+                <List.Header style={style}>{statsTitle[key].title}</List.Header>
+                <List.Description>
+                  {stats[key].toLocaleString()}
+                </List.Description>
+              </List.Content>
+            </List.Item>
+          );
+        }
+      })}
+    </List>
+  );
+
   return (
     <div className="Header" data-cy="header">
       {TitleContainer}
       <Divider />
       <div className="row space-between">
-        <List divided relaxed>
-          <Title as="h3" style={{ paddingBottom: '.5rem' }}>
-            <Title.Content>
-              {props.filteredByContinent
-                ? props.data[0].name
-                : 'Global Statistics'}{' '}
-            </Title.Content>
-          </Title>
-          {Object.keys(stats).map(key => {
-            if (statsKeys.includes(key)) {
-              return (
-                <List.Item key={key}>
-                  <List.Content>
-                    <List.Header>{statsTitle[key]}</List.Header>
-                    <List.Description>
-                      {stats[key].toLocaleString()}
-                    </List.Description>
-                  </List.Content>
-                </List.Item>
-              );
-            }
-          })}
-        </List>
+        {mobileSummaryContent}
+        {desktopSummaryContent}
         {props.filteredByContinent ? (
           <ContinentChart
             data={[props.data[0].currentStats, props.data[0].totalStats]}

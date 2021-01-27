@@ -1,8 +1,10 @@
 import React, { useRef, useEffect, useState } from 'react';
+import { useMediaQuery } from 'react-responsive';
 import {
   Button,
   Card,
   Icon,
+  Item,
   Image,
   Label,
   Loader,
@@ -10,7 +12,7 @@ import {
 } from 'semantic-ui-react';
 import ContinentChart from './ContinentChart';
 
-import { tableHeaders } from '../constants';
+import { statsTitle, tableHeaders } from '../constants';
 
 function Content({
   data,
@@ -28,6 +30,12 @@ function Content({
   const [showCountriesEnabled, setShowCountriesEnabled] = useState(
     Array(6).fill(false)
   );
+  const isDesktopOrLaptop = useMediaQuery({
+    query: '(min-device-width: 1224px)',
+  });
+  const isTabletOrMobileDevice = useMediaQuery({
+    query: '(max-device-width: 1223px)',
+  });
 
   useEffect(() => {
     const observer = new IntersectionObserver(([entry]) => {
@@ -40,56 +48,89 @@ function Content({
     }
   }, [ref]);
 
+  const desktopContent = isDesktopOrLaptop && (
+    <Table selectable sortable>
+      <Table.Header>
+        {tableHeaders.map((headers, index) => (
+          <Table.Row key={index}>
+            {headers.map(item => (
+              <Table.HeaderCell
+                key={item.key}
+                colSpan={item.col}
+                rowSpan={item.row}
+                onClick={() => handleSort(item.text)}
+                sorted={sort === item.text.toLowerCase() ? sortDirection : null}
+              >
+                {item.text}
+              </Table.HeaderCell>
+            ))}
+          </Table.Row>
+        ))}
+      </Table.Header>
+      <Table.Body data-cy="tableBody">
+        {data.length > 0 ? (
+          data.map(item => (
+            <Table.Row key={item.name}>
+              <Table.Cell width={4}>
+                <Image floated="left" size="mini" src={item.flag} />
+                {item.name}
+              </Table.Cell>
+              {item.totalStats.map(statistic => (
+                <Table.Cell
+                  key={statistic.key}
+                  negative={statistic.key === 'deaths'}
+                  positive={statistic.key === 'recoveries'}
+                  warning={statistic.key === 'cases'}
+                >
+                  {statistic.value.toLocaleString()}
+                </Table.Cell>
+              ))}
+            </Table.Row>
+          ))
+        ) : (
+          <Table.Row>
+            <Table.Cell>No results found.</Table.Cell>
+          </Table.Row>
+        )}
+      </Table.Body>
+    </Table>
+  );
+
+  const mobileContent = isTabletOrMobileDevice && (
+    <Item.Group divided unstackable>
+      {data.length > 0 ? (
+        data.map(item => (
+          <Item key={item.name}>
+            <Item.Content verticalAlign="middle">
+              <Item.Header>{item.name}</Item.Header>
+              {item.totalStats.map((statistic, index) => {
+                const color = statsTitle[statistic.key].color;
+                const style = color ? { color } : {};
+
+                return (
+                  <Item.Description key={statistic.key} style={style}>
+                    <b>{statsTitle[statistic.key].title} | </b>
+                    {statistic.value.toLocaleString() || '-'}
+                  </Item.Description>
+                );
+              })}
+            </Item.Content>
+            <div>
+              <Item.Image size="tiny" src={item.flag} />
+            </div>
+          </Item>
+        ))
+      ) : (
+        <p>No results found.</p>
+      )}
+    </Item.Group>
+  );
+
   //TODO: sort table
   const renderCountriesContent = () => (
     <div data-cy="content">
-      <Table selectable sortable>
-        <Table.Header>
-          {tableHeaders.map((headers, index) => (
-            <Table.Row key={index}>
-              {headers.map(item => (
-                <Table.HeaderCell
-                  key={item.key}
-                  colSpan={item.col}
-                  rowSpan={item.row}
-                  onClick={() => handleSort(item.text)}
-                  sorted={
-                    sort === item.text.toLowerCase() ? sortDirection : null
-                  }
-                >
-                  {item.text}
-                </Table.HeaderCell>
-              ))}
-            </Table.Row>
-          ))}
-        </Table.Header>
-        <Table.Body data-cy="tableBody">
-          {data.length > 0 ? (
-            data.map(item => (
-              <Table.Row key={item.name}>
-                <Table.Cell width={4}>
-                  <Image floated="left" size="mini" src={item.flag} />
-                  {item.name}
-                </Table.Cell>
-                {item.totalStats.map(statistic => (
-                  <Table.Cell
-                    key={statistic.key}
-                    negative={statistic.key === 'deaths'}
-                    positive={statistic.key === 'recoveries'}
-                    warning={statistic.key === 'cases'}
-                  >
-                    {statistic.value.toLocaleString()}
-                  </Table.Cell>
-                ))}
-              </Table.Row>
-            ))
-          ) : (
-            <Table.Row>
-              <Table.Cell>No results found.</Table.Cell>
-            </Table.Row>
-          )}
-        </Table.Body>
-      </Table>
+      {desktopContent}
+      {mobileContent}
       {isLoadingRows ? <Loader active inline="centered" /> : ''}
     </div>
   );

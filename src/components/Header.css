@@ -16,3 +16,21 @@
   flex: 1;
   align-self: stretch;
 }
+
+@media screen and (max-width: 1223px) {
+  .Header .space-between {
+    margin: 2rem 0 0 !important;
+  }
+
+  .row.flex-horizontal {
+    margin-bottom: 1rem !important;
+  }
+
+  .row.space-between {
+    margin-top: 1rem !important;
+  }
+
+  .ui.divider {
+    display: none;
+  }
+}

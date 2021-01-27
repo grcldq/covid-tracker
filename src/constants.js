@@ -1,4 +1,4 @@
-const api = 'https://corona.lmao.ninja/v2/';
+const api = 'https://disease.sh/v2/';
 const gitUrl = 'https://github.com/grcldq/covid-tracker';
 const pageConfig = {
   NUMBER_OF_ROWS: 35,
@@ -48,12 +48,36 @@ const statsKeys = [
   'tests',
 ];
 const statsTitle = {
-  active: 'Active',
-  cases: 'Cases',
-  critical: 'Critical',
-  deaths: 'Deaths',
-  recovered: 'Recovered',
-  tests: 'Tests Conducted',
+  active: {
+    color: '#a88d08',
+    title: 'Active',
+  },
+  cases: {
+    color: '#ea804f',
+    title: 'Cases',
+  },
+  critical: {
+    color: '#ea5e48',
+    title: 'Critical',
+  },
+  deaths: {
+    color: '#B03060',
+    title: 'Deaths',
+  },
+  population: {
+    title: 'Population',
+  },
+  recovered: {
+    color: '#68990d',
+    title: 'Recovered',
+  },
+  recoveries: {
+    color: '#68990d',
+    title: 'Recoveries',
+  },
+  tests: {
+    title: 'Tested',
+  },
 };
 
 export {
