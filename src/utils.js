@@ -152,7 +152,7 @@ export function formatContinents(data) {
 export function formatGlobalChartData(data) {
   const formattedData = [];
 
-  return new Promise((resolve, reject) => {
+  return new Promise(resolve => {
     Object.entries(data).forEach(([parentKey, value]) => {
       Object.entries(value).forEach(([key, value], index) => {
         const date = new Date(key);
@@ -194,7 +194,7 @@ export function formatContinentChartData(data) {
     formattedData.push(charts);
   };
 
-  return new Promise((resolve, reject) => {
+  return new Promise(resolve => {
     formatter(current);
     formatter(total);
     resolve(formattedData);

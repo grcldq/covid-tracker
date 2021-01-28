@@ -10,26 +10,25 @@ import {
   Loader,
   Table,
 } from 'semantic-ui-react';
+import PropTypes from 'prop-types';
 import ContinentChart from './ContinentChart';
 
 import { statsTitle, tableHeaders } from '../constants';
 
 function Content({
   data,
-  loadMoreRows,
-  loading,
-  isCountryView,
-  isLoadingRows,
   handleCountriesOfContinentClick,
   handleSort,
+  isCountryView,
+  isLoadingRows,
+  loading,
+  loadMoreRows,
   sort,
   sortDirection,
 }) {
   const ref = useRef();
   const [cardsInfoEnabled, setCardsInfoEnabled] = useState(Array(6).fill(true));
-  const [showCountriesEnabled, setShowCountriesEnabled] = useState(
-    Array(6).fill(false)
-  );
+  const [showCountriesEnabled] = useState(Array(6).fill(false));
   const isDesktopOrLaptop = useMediaQuery({
     query: '(min-device-width: 1224px)',
   });
@@ -103,7 +102,7 @@ function Content({
           <Item key={item.name}>
             <Item.Content verticalAlign="middle">
               <Item.Header>{item.name}</Item.Header>
-              {item.totalStats.map((statistic, index) => {
+              {item.totalStats.map(statistic => {
                 const color = statsTitle[statistic.key].color;
                 const style = color ? { color } : {};
 
@@ -236,5 +235,17 @@ function Content({
     </div>
   );
 }
+
+Content.propTypes = {
+  data: PropTypes.object,
+  loadMoreRows: PropTypes.bool,
+  loading: PropTypes.bool,
+  isCountryView: PropTypes.bool,
+  isLoadingRows: PropTypes.bool,
+  handleCountriesOfContinentClick: PropTypes.func,
+  handleSort: PropTypes.func,
+  sort: PropTypes.string,
+  sortDirection: PropTypes.string,
+};
 
 export default Content;

@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   Divider,
   Grid,
@@ -7,6 +8,7 @@ import {
   List,
 } from 'semantic-ui-react';
 import { useMediaQuery } from 'react-responsive';
+import PropTypes from 'prop-types';
 
 import ContinentChart from './ContinentChart';
 import DataChart from './DataChart';
@@ -52,6 +54,7 @@ function Header(props) {
         <a
           href={gitUrl}
           target="_blank"
+          rel="noreferrer"
           style={{
             display: 'flex',
             alignContent: 'center',
@@ -147,5 +150,11 @@ function Header(props) {
     </div>
   );
 }
+
+Header.propTypes = {
+  data: PropTypes.array,
+  filteredByContinent: PropTypes.bool,
+  filterSearch: PropTypes.func,
+};
 
 export default Header;

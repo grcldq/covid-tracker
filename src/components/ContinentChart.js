@@ -1,5 +1,6 @@
 import React from 'react';
 import MediaQuery from 'react-responsive';
+import PropTypes from 'prop-types';
 import { Loader } from 'semantic-ui-react';
 import {
   Bar,
@@ -103,5 +104,9 @@ class ContinentChart extends React.Component {
     );
   }
 }
+
+ContinentChart.propTypes = {
+  data: PropTypes.object,
+};
 
 export default ContinentChart;

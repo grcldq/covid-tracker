@@ -1,5 +1,6 @@
 import React from 'react';
 import MediaQuery from 'react-responsive';
+import PropTypes from 'prop-types';
 import { Loader } from 'semantic-ui-react';
 import {
   Area,
@@ -101,5 +102,9 @@ class DataChart extends React.Component {
     );
   }
 }
+
+DataChart.propTypes = {
+  data: PropTypes.object,
+};
 
 export default DataChart;

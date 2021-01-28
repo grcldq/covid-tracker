@@ -1,4 +1,6 @@
+import React from 'react';
 import { Button, Dropdown, Icon } from 'semantic-ui-react';
+import PropTypes from 'prop-types';
 
 import { filterOptions } from '../constants';
 import './Filter.css';
@@ -34,5 +36,12 @@ function Filter(props) {
     </div>
   );
 }
+
+Filter.propTypes = {
+  filteredByContinent: PropTypes.bool,
+  filter: PropTypes.string,
+  filtersChange: PropTypes.func,
+  updated: PropTypes.string,
+};
 
 export default Filter;
