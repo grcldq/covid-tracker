@@ -1,0 +1,41 @@
+{
+  "icons": [
+    {
+      "src": "/covid-tracker/icon_512x512.e5ad8b4922ad6dbd7d4b59649dd6723f.ico",
+      "sizes": "512x512",
+      "type": "image/vnd.microsoft.icon"
+    },
+    {
+      "src": "/covid-tracker/icon_384x384.e5ad8b4922ad6dbd7d4b59649dd6723f.ico",
+      "sizes": "384x384",
+      "type": "image/vnd.microsoft.icon"
+    },
+    {
+      "src": "/covid-tracker/icon_256x256.e5ad8b4922ad6dbd7d4b59649dd6723f.ico",
+      "sizes": "256x256",
+      "type": "image/vnd.microsoft.icon"
+    },
+    {
+      "src": "/covid-tracker/icon_192x192.e5ad8b4922ad6dbd7d4b59649dd6723f.ico",
+      "sizes": "192x192",
+      "type": "image/vnd.microsoft.icon"
+    },
+    {
+      "src": "/covid-tracker/icon_128x128.e5ad8b4922ad6dbd7d4b59649dd6723f.ico",
+      "sizes": "128x128",
+      "type": "image/vnd.microsoft.icon"
+    },
+    {
+      "src": "/covid-tracker/icon_96x96.e5ad8b4922ad6dbd7d4b59649dd6723f.ico",
+      "sizes": "96x96",
+      "type": "image/vnd.microsoft.icon"
+    }
+  ],
+  "name": "COVID-19 Tracker",
+  "short_name": "covid-tracker",
+  "orientation": "portrait",
+  "display": "standalone",
+  "start_url": ".",
+  "description": "coronavirus tracker created with React.js",
+  "background_color": "#ffffff"
+}
