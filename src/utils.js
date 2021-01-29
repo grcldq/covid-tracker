@@ -240,11 +240,8 @@ export function sortTable(data, sortBy, sortDirection) {
       }
     });
 
-    console.log(statsB < statsA);
     return sortDirection === 'ascending' ? statsA < statsB : statsB < statsA;
   });
-
-  console.log(sortedData);
 
   return sortedData;
 }
