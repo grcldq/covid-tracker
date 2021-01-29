@@ -240,7 +240,7 @@ export function sortTable(data, sortBy, sortDirection) {
       }
     });
 
-    return sortDirection === 'ascending' ? statsA < statsB : statsB < statsA;
+    return sortDirection === 'ascending' ? statsA - statsB : statsB - statsA;
   });
 
   return sortedData;

@@ -205,13 +205,22 @@ class App extends React.Component {
 
   handleSort(sort) {
     let sortDirection = this.state.sortDirection;
+    let data = this.state.isFilteredByContinent
+      ? this.state.filteredData
+      : this.state.countryData;
 
-    if (sort === this.state.sort) {
+    if (sort.toLowerCase() === this.state.sort.toLowerCase()) {
       sortDirection =
-        this.state.sort === 'ascending' ? 'descending' : 'ascending';
+        sortDirection === 'ascending' ? 'descending' : 'ascending';
     }
 
-    sortTable(this.state.filteredData, sort, sortDirection);
+    let filteredData = sortTable(data, sort, sortDirection);
+
+    if (!this.state.isFilteredByContinent) {
+      filteredData = filteredData.slice(0, NUMBER_OF_ROWS);
+    }
+
+    this.setState({ filteredData, sort, sortDirection });
   }
 
   loadMoreRows() {

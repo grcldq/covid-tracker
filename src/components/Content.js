@@ -50,21 +50,27 @@ function Content({
   const desktopContent = isDesktopOrLaptop && (
     <Table selectable sortable>
       <Table.Header>
-        {tableHeaders.map((headers, index) => (
-          <Table.Row key={index}>
-            {headers.map(item => (
-              <Table.HeaderCell
-                key={item.key}
-                colSpan={item.col}
-                rowSpan={item.row}
-                onClick={() => handleSort(item.text)}
-                sorted={sort === item.text.toLowerCase() ? sortDirection : null}
-              >
-                {item.text}
-              </Table.HeaderCell>
-            ))}
-          </Table.Row>
-        ))}
+        {tableHeaders.map((headers, index) => {
+          return (
+            <Table.Row key={index}>
+              {headers.map(item => (
+                <Table.HeaderCell
+                  key={item.key}
+                  colSpan={item.col}
+                  rowSpan={item.row}
+                  onClick={() => handleSort(item.text)}
+                  sorted={
+                    sort.toLowerCase() === item.text.toLowerCase()
+                      ? sortDirection
+                      : false
+                  }
+                >
+                  {item.text}
+                </Table.HeaderCell>
+              ))}
+            </Table.Row>
+          );
+        })}
       </Table.Header>
       <Table.Body data-cy="tableBody">
         {data.length > 0 ? (
@@ -125,7 +131,6 @@ function Content({
     </Item.Group>
   );
 
-  //TODO: sort table
   const renderCountriesContent = () => (
     <div data-cy="content">
       {desktopContent}
