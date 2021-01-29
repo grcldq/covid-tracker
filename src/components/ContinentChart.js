@@ -81,7 +81,7 @@ class ContinentChart extends React.Component {
     );
 
     return (
-      <div>
+      <div style={{ width: 'inherit' }}>
         <MediaQuery maxDeviceWidth={1223}>
           <ResponsiveContainer width="100%" height={200}>
             {chart1}
@@ -92,10 +92,10 @@ class ContinentChart extends React.Component {
         </MediaQuery>
         <MediaQuery minDeviceWidth={1224}>
           <div style={{ display: 'flex', flex: 1 }}>
-            <ResponsiveContainer width={450} height={250}>
+            <ResponsiveContainer width="100%" height={250}>
               {chart1}
             </ResponsiveContainer>
-            <ResponsiveContainer width={450} height={250}>
+            <ResponsiveContainer width="100%" height={250}>
               {chart2}
             </ResponsiveContainer>
           </div>
@@ -106,7 +106,7 @@ class ContinentChart extends React.Component {
 }
 
 ContinentChart.propTypes = {
-  data: PropTypes.object,
+  data: PropTypes.array,
 };
 
 export default ContinentChart;

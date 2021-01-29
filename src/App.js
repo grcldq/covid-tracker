@@ -173,11 +173,11 @@ class App extends React.Component {
     }
 
     this.setState({
-      filter: value,
-      filteredContinent: filteredData[0].continent,
       filteredData,
       isCountryView,
-      isFilteredByContinent: continent,
+      filter: value,
+      filteredContinent: filteredData[0].continent,
+      isFilteredByContinent: continent ? true : false,
     });
   }
 

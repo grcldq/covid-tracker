@@ -41,7 +41,7 @@ Filter.propTypes = {
   filteredByContinent: PropTypes.bool,
   filter: PropTypes.string,
   filtersChange: PropTypes.func,
-  updated: PropTypes.string,
+  updated: PropTypes.number,
 };
 
 export default Filter;

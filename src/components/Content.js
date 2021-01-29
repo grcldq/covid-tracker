@@ -237,8 +237,8 @@ function Content({
 }
 
 Content.propTypes = {
-  data: PropTypes.object,
-  loadMoreRows: PropTypes.bool,
+  data: PropTypes.array,
+  loadMoreRows: PropTypes.func,
   loading: PropTypes.bool,
   isCountryView: PropTypes.bool,
   isLoadingRows: PropTypes.bool,
