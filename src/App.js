@@ -204,6 +204,10 @@ class App extends React.Component {
   }
 
   handleSort(sort) {
+    if (sort === 'Total') {
+      return;
+    }
+
     let sortDirection = this.state.sortDirection;
     let data = this.state.isFilteredByContinent
       ? this.state.filteredData

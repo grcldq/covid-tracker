@@ -223,6 +223,15 @@ export function formatContinentName(continent) {
 
 export function sortTable(data, sortBy, sortDirection) {
   const sortedData = data.sort((itemA, itemB) => {
+    const isAscending = sortDirection === 'ascending';
+    const sortCountry = sortBy === 'Country';
+
+    if (sortCountry) {
+      return isAscending
+        ? itemA.name.localeCompare(itemB.name)
+        : itemB.name.localeCompare(itemA.name);
+    }
+
     const { totalStats: statsArrayA } = itemA;
     const { totalStats: statsArrayB } = itemB;
     let statsA = 0,
