@@ -5,6 +5,6 @@ A COVID Tracker project that was bootstrapped with [Create React App](https://gi
 # Run
 
 ```
-yarn install
-yarn start
+npm install
+npm start
 ```

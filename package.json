@@ -1,14 +1,13 @@
 {
   "name": "covid-tracker",
-  "homepage": "https://grcldq.github.io/covid-tracker",
+  "homepage": "https://gcovid-tracker.herokuapp.com/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "gh-pages": "^3.1.0",
     "materialize-css": "^1.0.0-rc.2",
     "prettier": "^2.2.1",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
     "react-responsive": "^8.2.0",
     "react-scripts": "4.0.1",
     "recharts": "^1.8.5",
@@ -42,7 +41,6 @@
     "start": "webpack serve --open --config webpack.dev.js",
     "format": "yarn run eslint ./src && yarn prettier --write ./src",
     "build": "webpack --config webpack.prod.js",
-    "deploy": "gh-pages -b master -d dist",
     "git-deploy": "npm run build && npm run deploy",
     "cypress": "npm run start && npx cypress open"
   },
