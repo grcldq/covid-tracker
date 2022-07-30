@@ -17,6 +17,23 @@
   align-self: stretch;
 }
 
+.header--global-stats {
+  padding-bottom: 0.5rem;
+  text-align: center;
+}
+
+.header--chart-btn {
+  margin: 8px 0 !important;
+}
+
+.header--grid-col {
+  padding-bottom: 0;
+}
+
+.header--grid {
+  padding-bottom: 2rem;
+}
+
 @media screen and (max-width: 1223px) {
   .Header .space-between {
     margin: 2rem 0 0 !important;

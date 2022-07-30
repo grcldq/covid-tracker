@@ -34,7 +34,7 @@ const Header = ({ filteredByContinent, data, filterSearch }) => {
           }}
         >
           <Button icon>
-            <Icon color='black' name="github" />
+            <Icon color="black" name="github" />
           </Button>
         </a>
 
@@ -55,9 +55,9 @@ const Header = ({ filteredByContinent, data, filterSearch }) => {
   const renderSummary = () => (
     <Grid
       style={{
-        paddingBottom: '2rem',
         justifyContent: isMobile ? 'flex-start' : 'center',
       }}
+      className="header--grid"
     >
       {stats &&
         Object.keys(stats).map(key => {
@@ -68,7 +68,7 @@ const Header = ({ filteredByContinent, data, filterSearch }) => {
             return (
               <Grid.Column
                 key={key}
-                style={{ paddingBottom: 0 }}
+                className="header--grid-col"
                 mobile={5}
                 tablet={4}
                 computer={2}
@@ -84,7 +84,7 @@ const Header = ({ filteredByContinent, data, filterSearch }) => {
   );
 
   const renderGlobalStatsHeader = () => (
-    <div style={{ paddingBottom: '.5rem', textAlign: 'center' }}>
+    <div className="header--global-stats">
       <Title as="h3">
         <Title.Content>
           {filteredByContinent ? data[0].name : 'Global Statistics'}
@@ -96,7 +96,7 @@ const Header = ({ filteredByContinent, data, filterSearch }) => {
           icon={showChart ? 'hide' : 'unhide'}
           content={showChart ? 'Hide Chart' : 'Show Chart'}
           onClick={() => setShowChart(showChart => !showChart)}
-          style={{ margin: '8px 0' }}
+          className="header--chart-btn"
         />
       )}
     </div>
