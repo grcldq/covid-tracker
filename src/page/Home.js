@@ -30,7 +30,7 @@ const Home = () => {
   const lastUpdate = globalStats.length && globalStats[0].updated;
 
   return (
-    <Container data-cy="container">
+    <>
       {isFetchingGlobalStats ? (
         <Loader active data-cy="loader" />
       ) : (
@@ -47,28 +47,30 @@ const Home = () => {
             filteredByContinent={isFilteredByContinent}
             filterSearch={handleSearch}
           />
-          <Filter
-            updated={lastUpdate}
-            filter={filter}
-            filteredContinent={filteredContinent}
-            isFilteredByContinent={isFilteredByContinent}
-            onFilterBtnClick={handleFilterChange}
-          />
-          <Content
-            data={filteredData}
-            loading={isFetchingData}
-            loadMoreRows={loadMoreRows}
-            isCountryView={isCountryView}
-            isLoadingRows={isLoadingMore}
-            handleFilterByContinentCountries={filterByContinentCountries}
-            handleSort={handleSort}
-            sort={sort}
-            sortDirection={sortDirection}
-          />
+          <Container>
+            <Filter
+              updated={lastUpdate}
+              filter={filter}
+              filteredContinent={filteredContinent}
+              isFilteredByContinent={isFilteredByContinent}
+              onFilterBtnClick={handleFilterChange}
+            />
+            <Content
+              data={filteredData}
+              loading={isFetchingData}
+              loadMoreRows={loadMoreRows}
+              isCountryView={isCountryView}
+              isLoadingRows={isLoadingMore}
+              handleFilterByContinentCountries={filterByContinentCountries}
+              handleSort={handleSort}
+              sort={sort}
+              sortDirection={sortDirection}
+            />
+          </Container>
           <Footer />
         </div>
       )}
-    </Container>
+    </>
   );
 };
 

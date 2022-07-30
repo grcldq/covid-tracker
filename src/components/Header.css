@@ -1,7 +1,3 @@
-.Header {
-  margin: 1rem 0;
-}
-
 .ui.header {
   margin-bottom: 0 !important;
 }
@@ -25,6 +21,7 @@
 }
 
 .header--global-stats {
+  margin-top: 1.2rem;
   padding-bottom: 0.5rem;
   text-align: center;
 }
@@ -39,13 +36,15 @@
 
 .header--grid {
   padding-bottom: 2rem;
+  margin: 0 1rem !important;
+}
+
+.header--row {
+  margin: 0 !important;
+  padding: 4px 2rem;
 }
 
 @media screen and (max-width: 1223px) {
-  .Header .space-between {
-    margin: 2rem 0 0 !important;
-  }
-
   .row.flex-horizontal {
     margin-bottom: 1rem !important;
   }

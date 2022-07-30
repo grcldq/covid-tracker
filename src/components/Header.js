@@ -16,12 +16,12 @@ const Header = ({ filteredByContinent, data, filterSearch }) => {
   });
 
   const RenderHeaderTitle = () => (
-    <div className="row space-between">
-      <Title as="h3" data-cy="title">
+    <div className="header--row row space-between" style={{ backgroundColor: '#202020' }}>
+      <Title as="h3" data-cy="title" inverted>
         <Icon name="chart line" />
         <Title.Content>COVID-19 Tracker</Title.Content>
       </Title>
-      <div className="row flex-horizontal">
+      <div className="header--row row flex-horizontal">
         <a
           href={gitUrl}
           target="_blank"
@@ -41,6 +41,7 @@ const Header = ({ filteredByContinent, data, filterSearch }) => {
             data-cy="search"
             fluid
             style={{ minWidth: '250px' }}
+            inverted
           />
         </div>
       </div>

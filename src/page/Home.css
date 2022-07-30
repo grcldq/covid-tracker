@@ -11,3 +11,8 @@
 .space-between {
   justify-content: space-between;
 }
+
+html,
+body {
+  background-color: #F3F0EF !important;
+}
