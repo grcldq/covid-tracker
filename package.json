@@ -9,6 +9,7 @@
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "react-responsive": "^8.2.0",
+    "react-router-dom": "^6.3.0",
     "react-scripts": "4.0.1",
     "recharts": "^1.8.5",
     "semantic-ui-css": "^2.4.1",

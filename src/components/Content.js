@@ -14,10 +14,11 @@ import PropTypes from 'prop-types';
 import ContinentChart from './ContinentChart';
 
 import { statsTitle, tableHeaders } from '../constants';
+import SortDirection from '../constants/SortDirection';
 
 function Content({
   data,
-  handleCountriesOfContinentClick,
+  // handleCountriesOfContinentClick,
   handleSort,
   isCountryView,
   isLoadingRows,
@@ -62,7 +63,7 @@ function Content({
                   sorted={
                     sort.toLowerCase() === item.text.toLowerCase()
                       ? sortDirection
-                      : false
+                      : SortDirection.DESCENDING
                   }
                 >
                   {item.text}
@@ -156,7 +157,7 @@ function Content({
                     color="grey"
                     data-key={index}
                     data-continent={item.name}
-                    onClick={updateCountriesDisplayedState}
+                    // onClick={updateCountriesDisplayedState}
                   >
                     {showCountriesEnabled[index]
                       ? 'Hide countries'
@@ -229,7 +230,7 @@ function Content({
     setCardsInfoEnabled(arrCopy);
   };
 
-  const updateCountriesDisplayedState = e => handleCountriesOfContinentClick(e);
+  // const updateCountriesDisplayedState = e => handleCountriesOfContinentClick(e);
 
   return (
     <div>
@@ -247,7 +248,7 @@ Content.propTypes = {
   loading: PropTypes.bool,
   isCountryView: PropTypes.bool,
   isLoadingRows: PropTypes.bool,
-  handleCountriesOfContinentClick: PropTypes.func,
+  // handleCountriesOfContinentClick: PropTypes.func,
   handleSort: PropTypes.func,
   sort: PropTypes.string,
   sortDirection: PropTypes.string,
