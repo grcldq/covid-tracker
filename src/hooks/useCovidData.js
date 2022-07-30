@@ -59,35 +59,35 @@ const useCovidData = () => {
   };
 
   const loadMoreRows = () => {
-    // const {
-    //   isCountryView,
-    //   filteredData,
-    //   search,
-    //   searchFilteredData,
-    //   isFilteredByContinent,
-    // } = filters;
-    // // return if continents view
-    // if (
-    //   !isCountryView ||
-    //   isFilteredByContinent ||
-    //   filteredData.length === continentsData.length
-    // ) {
-    //   return;
-    // }
-    // // return if filtered length doesn't need more loading
-    // if (
-    //   (search && searchFilteredData.length <= NUMBER_OF_ROWS) ||
-    //   (search && searchFilteredData.length === filteredData.length)
-    // )
-    //   return;
-    // setIsLoadingMore(true);
-    // const updatedFilteredData = search
-    //   ? searchFilteredData.slice(0, filteredData.length + NUMBER_OF_ROWS)
-    //   : countryData.slice(0, filteredData.length + NUMBER_OF_ROWS);
-    // setTimeout(() => {
-    //   filters.setFilteredData(updatedFilteredData);
-    //   setIsLoadingMore(false);
-    // }, 1000);
+    const {
+      isCountryView,
+      filteredData,
+      search,
+      searchFilteredData,
+      isFilteredByContinent,
+    } = filters;
+    // return if continents view
+    if (
+      !isCountryView ||
+      isFilteredByContinent ||
+      filteredData.length === continentsData.length
+    ) {
+      return;
+    }
+    // return if filtered length doesn't need more loading
+    if (
+      (search && searchFilteredData.length <= NUMBER_OF_ROWS) ||
+      (search && searchFilteredData.length === filteredData.length)
+    )
+      return;
+    setIsLoadingMore(true);
+    const updatedFilteredData = search
+      ? searchFilteredData.slice(0, filteredData.length + NUMBER_OF_ROWS)
+      : countryData.slice(0, filteredData.length + NUMBER_OF_ROWS);
+    setTimeout(() => {
+      filters.setFilteredData(updatedFilteredData);
+      setIsLoadingMore(false);
+    }, 1000);
   };
 
   const toggleDataLoading = () => {
@@ -97,7 +97,6 @@ const useCovidData = () => {
   useEffect(() => {
     fetchData();
     fetchGlobalData();
-    console.log(`${api}countries?sort=${filters.sort}`);
   }, []);
 
   return {

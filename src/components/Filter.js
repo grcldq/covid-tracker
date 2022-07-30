@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from 'semantic-ui-react';
+import { Button, Header } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
 import { filterOptions } from '../constants';
@@ -19,10 +19,11 @@ const Filter = ({
 
   return (
     <div className="row space-between">
-      <div>
+      <div className="row">
         {filterOptions.map(option => (
           <Button
             key={option.key}
+            className="filter-button"
             primary={option.value === filter && highlightBtn}
             onClick={() => onFilterBtnClick({ filterOption: option.value })}
           >
@@ -30,7 +31,11 @@ const Filter = ({
           </Button>
         ))}
         {isFilteredByContinent && filteredContinent && (
-          <p>Countries in {filteredContinent}</p>
+          <div className="filter-country-container">
+            <Header as="h4" color="blue" className="filter-country">
+              Countries in {filteredContinent}
+            </Header>
+          </div>
         )}
       </div>
       <p>Last updated {new Date(updated).toLocaleString()}</p>

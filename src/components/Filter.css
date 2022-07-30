@@ -8,4 +8,22 @@
     justify-content: unset !important;
     align-items: unset !important;
   }
+
+  .filter-button {
+    max-width: 100%;
+    width: 100%;
+    margin: 5px 0 !important;
+  }
+
+  .filter-country-container {
+    margin-top: 10px;
+  }
+}
+
+.filter-country {
+  margin-top: 0 !important;
+}
+
+.filter-country-container {
+  margin-left: 10px;
 }

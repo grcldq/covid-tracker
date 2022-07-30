@@ -1,6 +1,6 @@
 import { Container, Loader } from 'semantic-ui-react';
 import React from 'react';
-// import Header from '../components/Header';
+import Header from '../components/Header';
 import Content from '../components/Content';
 import Filter from '../components/Filter';
 import Footer from '../components/Footer';
@@ -10,7 +10,6 @@ import './Home.css';
 const Home = () => {
   const {
     continentsData,
-    countryData,
     globalStats,
     isFetchingGlobalStats,
     isFilteredByContinent,
@@ -36,15 +35,18 @@ const Home = () => {
         <Loader active data-cy="loader" />
       ) : (
         <div>
-          {/* <Header
+          <Header
             data={
               isFilteredByContinent
-                ? continentsData.filter(item => filteredContinent === item.name)
+                ? continentsData.filter(item => {
+                    console.log(filteredContinent, item.name);
+                    return filteredContinent === item.name;
+                  })
                 : globalStats
             }
             filteredByContinent={isFilteredByContinent}
             filterSearch={handleSearch}
-          /> */}
+          />
           <Filter
             updated={lastUpdate}
             filter={filter}

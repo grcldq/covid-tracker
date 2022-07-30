@@ -1,5 +1,5 @@
 .Header {
-  margin: 2rem 0 1rem;
+  margin: 1rem 0;
 }
 
 .ui.header {
@@ -24,10 +24,6 @@
 
   .row.flex-horizontal {
     margin-bottom: 1rem !important;
-  }
-
-  .row.space-between {
-    margin-top: 1rem !important;
   }
 
   .ui.divider {

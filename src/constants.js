@@ -1,7 +1,7 @@
 const api = 'https://disease.sh/v2/';
 const gitUrl = 'https://github.com/grcldq/covid-tracker';
 const pageConfig = {
-  NUMBER_OF_ROWS: 35,
+  NUMBER_OF_ROWS: 15,
 };
 const filterOptions = [
   { key: 1, text: 'Countries', value: 'countries' },
