@@ -26,6 +26,7 @@ const Home = () => {
     handleSearch,
     isLoadingMore,
     loadMoreRows,
+    filterByContinentCountries,
   } = useCovidData();
   const lastUpdate = globalStats.length && globalStats[0].updated;
 
@@ -47,8 +48,9 @@ const Home = () => {
           <Filter
             updated={lastUpdate}
             filter={filter}
-            filtersChange={handleFilterChange}
-            filteredByContinent={isFilteredByContinent}
+            filteredContinent={filteredContinent}
+            isFilteredByContinent={isFilteredByContinent}
+            onFilterBtnClick={handleFilterChange}
           />
           <Content
             data={filteredData}
@@ -56,7 +58,7 @@ const Home = () => {
             loadMoreRows={loadMoreRows}
             isCountryView={isCountryView}
             isLoadingRows={isLoadingMore}
-            // handleCountriesOfContinentClick={this.displayContinentCountries}
+            handleFilterByContinentCountries={filterByContinentCountries}
             handleSort={handleSort}
             sort={sort}
             sortDirection={sortDirection}

@@ -1,13 +1,18 @@
 import { useState } from 'react';
-import Filter from '../constants/Filter';
-import { filterByContinent, filterBySearch, sortTable } from '../utils';
+import FilterTypes from '../constants/FilterTypes';
+import {
+  filterByContinent,
+  filterBySearch,
+  formatContinentName,
+  sortTable,
+} from '../utils';
 import { pageConfig } from '../constants';
 const { NUMBER_OF_ROWS } = pageConfig;
-import Sort from '../constants/Sort';
-import SortDirection from '../constants/SortDirection';
+import Sort from '../constants/SortTypes';
+import SortDirectionTypes from '../constants/SortDirectionTypes';
 
 const useFilters = ({ countryData, continentsData }) => {
-  const [filter, setFilter] = useState(Filter.COUNTRIES);
+  const [filter, setFilter] = useState(FilterTypes.COUNTRIES);
   const [filteredContinent, setFilteredContinent] = useState('');
   const [filteredData, setFilteredData] = useState([]);
   const [isCountryView, setIsCountryView] = useState(true);
@@ -15,12 +20,12 @@ const useFilters = ({ countryData, continentsData }) => {
   const [searchFilteredData, setSearchFilteredData] = useState([]);
   const [search, setSearch] = useState('');
   const [sort, setSort] = useState(Sort.CASES);
-  const [sortDirection, setSortDirection] = useState(SortDirection.DESCENDING);
+  const [sortDirection, setSortDirection] = useState(
+    SortDirectionTypes.DESCENDING
+  );
 
-  const handleFilterChange = (e, { continent, value }) => {
-    e.preventDefault();
-
-    const countryView = value === Filter.COUNTRIES;
+  const handleFilterChange = ({ filterOption, continent }) => {
+    const countryView = filterOption === FilterTypes.COUNTRIES;
     let updatedData = [];
 
     if (countryView) {
@@ -33,7 +38,7 @@ const useFilters = ({ countryData, continentsData }) => {
 
     setFilteredData(updatedData);
     setIsCountryView(countryView);
-    setFilter(value);
+    setFilter(filterOption);
     setFilteredContinent(updatedData[0].continent);
     setIsFilteredByContinent(!!continent);
   };
@@ -70,9 +75,9 @@ const useFilters = ({ countryData, continentsData }) => {
 
     if (sortProp.toLowerCase() === sort.toLowerCase()) {
       updatedSortDirection =
-        updatedSortDirection === SortDirection.ASCENDING
-          ? SortDirection.DESCENDING
-          : SortDirection.ASCENDING;
+        updatedSortDirection === SortDirectionTypes.ASCENDING
+          ? SortDirectionTypes.DESCENDING
+          : SortDirectionTypes.ASCENDING;
     }
 
     let updatedFilterData = sortTable(data, sortProp, updatedSortDirection);
@@ -84,6 +89,12 @@ const useFilters = ({ countryData, continentsData }) => {
     setFilteredData(updatedFilterData);
     setSort(sortProp);
     setSortDirection(updatedSortDirection);
+  };
+
+  const filterByContinentCountries = e => {
+    const continent = e && formatContinentName(e.target.dataset.continent);
+
+    handleFilterChange({ continent, filterOption: FilterTypes.COUNTRIES });
   };
 
   return {
@@ -100,6 +111,7 @@ const useFilters = ({ countryData, continentsData }) => {
     setFilteredData,
     handleFilterChange,
     handleSearch,
+    filterByContinentCountries,
   };
 };
 

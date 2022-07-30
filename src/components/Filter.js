@@ -1,47 +1,49 @@
 import React from 'react';
-import { Button, Dropdown, Icon } from 'semantic-ui-react';
+import { Button } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
 import { filterOptions } from '../constants';
+import FilterTypes from '../constants/FilterTypes';
 import './Filter.css';
 
-function Filter(props) {
+const Filter = ({
+  filter,
+  filteredContinent,
+  isFilteredByContinent,
+  onFilterBtnClick,
+  updated,
+}) => {
+  const highlightBtn =
+    (filter === FilterTypes.COUNTRIES && !isFilteredByContinent) ||
+    filter === FilterTypes.CONTINENTS;
+
   return (
     <div className="row space-between">
       <div>
-        {props.filteredByContinent ? (
+        {filterOptions.map(option => (
           <Button
-            icon
-            labelPosition="left"
-            value={props.filter}
-            onClick={props.filtersChange}
-            data-cy="backButton"
+            key={option.key}
+            primary={option.value === filter && highlightBtn}
+            onClick={() => onFilterBtnClick({ filterOption: option.value })}
           >
-            <Icon name="arrow left" />
-            Go Back
+            {option.text}
           </Button>
-        ) : (
-          <Dropdown
-            placeholder="Filter By"
-            fluid
-            selection
-            value={props.filter}
-            options={filterOptions}
-            onChange={props.filtersChange}
-            data-cy="filterDropdown"
-          />
+        ))}
+        {isFilteredByContinent && filteredContinent && (
+          <p>Countries in {filteredContinent}</p>
         )}
       </div>
-      <p>Last updated {new Date(props.updated).toLocaleString()}</p>
+      <p>Last updated {new Date(updated).toLocaleString()}</p>
     </div>
   );
-}
+};
 
 Filter.propTypes = {
-  filteredByContinent: PropTypes.bool,
+  filteredContinent: PropTypes.string,
   filter: PropTypes.string,
-  filtersChange: PropTypes.func,
+  onFilterBtnClick: PropTypes.func,
   updated: PropTypes.number,
+  isFilteredByContinent: PropTypes.bool,
 };
 
 export default Filter;
