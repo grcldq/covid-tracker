@@ -26,12 +26,7 @@ const Header = ({ filteredByContinent, data, filterSearch }) => {
           href={gitUrl}
           target="_blank"
           rel="noreferrer"
-          style={{
-            display: 'flex',
-            alignContent: 'center',
-            justifyContent: 'flex-end',
-            marginRight: '1rem',
-          }}
+          className="header--icon-btn"
         >
           <Button icon>
             <Icon color="black" name="github" />

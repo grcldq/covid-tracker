@@ -49,8 +49,8 @@ const useCovidData = () => {
       )
     )
       .then(responseData => (globalStats = [...globalStats, ...responseData]))
-      .catch(e => {
-        //TODO error handling
+      .catch(() => {
+        console.error('Something went wrong!');
       })
       .finally(() => {
         setGlobalStats(globalStats);

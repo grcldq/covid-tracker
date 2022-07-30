@@ -17,6 +17,13 @@
   align-self: stretch;
 }
 
+.header--icon-btn {
+  display: flex;
+  align-content: center;
+  justify-content: flex-end;
+  margin-right: 1rem;
+}
+
 .header--global-stats {
   padding-bottom: 0.5rem;
   text-align: center;
