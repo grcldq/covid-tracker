@@ -12,12 +12,15 @@ const Header = ({ filteredByContinent, data, filterSearch }) => {
   const [showChart, setShowChart] = useState(false);
   const { stats, statsHistory } = useStats({ data, filteredByContinent });
   const isMobile = useMediaQuery({
-    query: '(max-width: 1268px)',
+    query: '(max-width: 768px)',
   });
 
   const RenderHeaderTitle = () => (
-    <div className="header--row row space-between" style={{ backgroundColor: '#202020' }}>
-      <Title as="h3" data-cy="title" inverted>
+    <div
+      className="header--row row space-between"
+      style={{ backgroundColor: '#202020' }}
+    >
+      <Title as="h3" data-cy="title" inverted className="header--title">
         <Icon name="chart line" />
         <Title.Content>COVID-19 Tracker</Title.Content>
       </Title>
@@ -49,34 +52,36 @@ const Header = ({ filteredByContinent, data, filterSearch }) => {
   );
 
   const renderSummary = () => (
-    <Grid
-      style={{
-        justifyContent: isMobile ? 'flex-start' : 'center',
-      }}
-      className="header--grid"
-    >
-      {stats &&
-        Object.keys(stats).map(key => {
-          if (statsKeys.includes(key)) {
-            const color = statsTitle[key].color;
-            const style = color ? { color } : {};
+    <div className="header--grid-container">
+      <Grid
+        style={{
+          justifyContent: isMobile ? 'flex-start' : 'center',
+        }}
+        className="header--grid"
+      >
+        {stats &&
+          Object.keys(stats).map(key => {
+            if (statsKeys.includes(key)) {
+              const color = statsTitle[key].color;
+              const style = color ? { color } : {};
 
-            return (
-              <Grid.Column
-                key={key}
-                className="header--grid-col"
-                mobile={5}
-                tablet={4}
-                computer={2}
-              >
-                <b style={style}>{statsTitle[key].title}</b>
-                <br />
-                {stats[key].toLocaleString()}
-              </Grid.Column>
-            );
-          }
-        })}
-    </Grid>
+              return (
+                <Grid.Column
+                  key={key}
+                  className="header--grid-col"
+                  mobile={5}
+                  tablet={2}
+                  computer={2}
+                >
+                  <b style={style}>{statsTitle[key].title}</b>
+                  <br />
+                  {stats[key].toLocaleString()}
+                </Grid.Column>
+              );
+            }
+          })}
+      </Grid>
+    </div>
   );
 
   const renderGlobalStatsHeader = () => (

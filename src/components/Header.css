@@ -37,6 +37,8 @@
 .header--grid {
   padding-bottom: 2rem;
   margin: 0 1rem !important;
+  max-width: 980px;
+  width: 100%;
 }
 
 .header--row {
@@ -44,12 +46,28 @@
   padding: 4px 2rem;
 }
 
+.header--grid-container {
+  margin: 0 auto;
+  display: flex;
+  flex: 1;
+  justify-content: center;
+}
+
 @media screen and (max-width: 1223px) {
   .row.flex-horizontal {
-    margin-bottom: 1rem !important;
+    margin-bottom: 8px !important;
   }
 
   .ui.divider {
     display: none;
+  }
+
+  .header--row {
+    padding: 4px;
+  }
+
+  .header--title {
+    margin: 8px 4px !important;
+    padding-bottom: 8px !important;
   }
 }
