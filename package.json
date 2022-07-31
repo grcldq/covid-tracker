@@ -1,6 +1,6 @@
 {
   "name": "covid-tracker",
-  "homepage": "https://gcovid-tracker.herokuapp.com/",
+  "homepage": "https://gcovid-tracker-woad.vercel.app",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

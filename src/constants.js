@@ -14,7 +14,6 @@ const tableHeaders = [
       text: 'Country',
       row: 2,
     },
-    { key: 2, text: 'Total', col: 5 },
   ],
   [
     {

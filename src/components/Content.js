@@ -36,7 +36,7 @@ function Content({
   });
 
   const desktopContent = isDesktopOrLaptop && (
-    <Table selectable sortable>
+    <Table selectable sortable singleLine>
       <Table.Header>
         {tableHeaders.map((headers, index) => {
           return (
@@ -52,6 +52,7 @@ function Content({
                       ? sortDirection
                       : SortDirectionTypes.DESCENDING
                   }
+                  style={{ borderLeft: 'none' }}
                 >
                   {item.text}
                 </Table.HeaderCell>
@@ -75,7 +76,7 @@ function Content({
                   positive={statistic.key === 'recoveries'}
                   warning={statistic.key === 'cases'}
                 >
-                  {statistic.value.toLocaleString()}
+                  {statistic.value ? statistic.value.toLocaleString() : '-'}
                 </Table.Cell>
               ))}
             </Table.Row>
@@ -145,6 +146,7 @@ function Content({
                     data-key={index}
                     data-continent={item.name}
                     onClick={handleFilterByContinentCountries}
+                    size='small'
                   >
                     {showCountriesEnabled[index]
                       ? 'Hide countries'
@@ -155,6 +157,7 @@ function Content({
                     icon
                     data-key={index}
                     onClick={updateCardsState}
+                    size='small'
                   >
                     <Icon
                       data-key={index}
@@ -172,7 +175,7 @@ function Content({
               </Card.Meta>
               <Card.Description>
                 {cardsInfoEnabled[index] ? (
-                  <Label.Group size="large">
+                  <Label.Group size="medium">
                     {item.currentStats.map(stat => (
                       <Label key={stat.title} color={stat.color}>
                         {stat.title}
