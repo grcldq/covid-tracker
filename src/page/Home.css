@@ -12,7 +12,17 @@
   justify-content: space-between;
 }
 
+.home--load-more-btn-container {
+  display: flex;
+  justify-content: center;
+  margin: 1rem 0;
+}
+
+.home--container {
+  padding-bottom: 70px;
+}
+
 html,
 body {
-  background-color: #F3F0EF !important;
+  background-color: #f3f0ef !important;
 }

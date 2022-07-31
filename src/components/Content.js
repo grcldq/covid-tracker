@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import {
   Button,
@@ -23,11 +23,9 @@ function Content({
   isCountryView,
   isLoadingRows,
   loading,
-  loadMoreRows,
   sort,
   sortDirection,
 }) {
-  const ref = useRef();
   const [cardsInfoEnabled, setCardsInfoEnabled] = useState(Array(6).fill(true));
   const [showCountriesEnabled] = useState(Array(6).fill(false));
   const isDesktopOrLaptop = useMediaQuery({
@@ -36,17 +34,6 @@ function Content({
   const isTabletOrMobileDevice = useMediaQuery({
     query: '(max-device-width: 1223px)',
   });
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) {
-        loadMoreRows();
-      }
-    });
-    if (ref.current) {
-      observer.observe(ref.current);
-    }
-  }, [ref]);
 
   const desktopContent = isDesktopOrLaptop && (
     <Table selectable sortable>
@@ -230,19 +217,11 @@ function Content({
     setCardsInfoEnabled(arrCopy);
   };
 
-  return (
-    <div>
-      {loading ? <Loader active /> : renderContent()}
-      <div ref={ref} style={{ visibility: 'hidden' }}>
-        Observer
-      </div>
-    </div>
-  );
+  return <div>{loading ? <Loader active /> : renderContent()}</div>;
 }
 
 Content.propTypes = {
   data: PropTypes.array,
-  loadMoreRows: PropTypes.func,
   loading: PropTypes.bool,
   isCountryView: PropTypes.bool,
   isLoadingRows: PropTypes.bool,

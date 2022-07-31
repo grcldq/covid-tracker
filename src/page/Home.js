@@ -1,11 +1,14 @@
-import { Container, Loader } from 'semantic-ui-react';
+import { Button, Container, Loader } from 'semantic-ui-react';
 import React from 'react';
 import Header from '../components/Header';
 import Content from '../components/Content';
 import Filter from '../components/Filter';
 import Footer from '../components/Footer';
 import useCovidData from '../hooks/useCovidData';
+import { pageConfig } from '../constants';
 import './Home.css';
+
+const { NUMBER_OF_ROWS } = pageConfig;
 
 const Home = () => {
   const {
@@ -38,18 +41,15 @@ const Home = () => {
           <Header
             data={
               isFilteredByContinent
-                ? continentsData.filter(item => {
-                    console.log(filteredContinent, item.name);
-                    return filteredContinent === item.name;
-                  })
+                ? continentsData.filter(item => filteredContinent === item.name)
                 : globalStats
             }
+            lastUpdate={lastUpdate}
             filteredByContinent={isFilteredByContinent}
             filterSearch={handleSearch}
           />
-          <Container>
+          <Container className='home--container'>
             <Filter
-              updated={lastUpdate}
               filter={filter}
               filteredContinent={filteredContinent}
               isFilteredByContinent={isFilteredByContinent}
@@ -58,7 +58,6 @@ const Home = () => {
             <Content
               data={filteredData}
               loading={isFetchingData}
-              loadMoreRows={loadMoreRows}
               isCountryView={isCountryView}
               isLoadingRows={isLoadingMore}
               handleFilterByContinentCountries={filterByContinentCountries}
@@ -66,6 +65,18 @@ const Home = () => {
               sort={sort}
               sortDirection={sortDirection}
             />
+            {filteredData.length >= NUMBER_OF_ROWS && (
+              <div className="home--load-more-btn-container">
+                <Button
+                  size="mini"
+                  icon="refresh"
+                  content="Load More"
+                  onClick={loadMoreRows}
+                  secondary
+                  disabled={isLoadingMore}
+                />
+              </div>
+            )}
           </Container>
           <Footer />
         </div>

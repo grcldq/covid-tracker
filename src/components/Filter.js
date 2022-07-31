@@ -11,7 +11,6 @@ const Filter = ({
   filteredContinent,
   isFilteredByContinent,
   onFilterBtnClick,
-  updated,
 }) => {
   const highlightBtn =
     (filter === FilterTypes.COUNTRIES && !isFilteredByContinent) ||
@@ -38,7 +37,6 @@ const Filter = ({
           </div>
         )}
       </div>
-      <p>Last updated {new Date(updated).toLocaleString()}</p>
     </div>
   );
 };
@@ -47,7 +45,6 @@ Filter.propTypes = {
   filteredContinent: PropTypes.string,
   filter: PropTypes.string,
   onFilterBtnClick: PropTypes.func,
-  updated: PropTypes.number,
   isFilteredByContinent: PropTypes.bool,
 };
 

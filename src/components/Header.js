@@ -8,7 +8,7 @@ import './Header.css';
 import { gitUrl, statsKeys, statsTitle } from '../constants';
 import useStats from '../hooks/useStats';
 
-const Header = ({ filteredByContinent, data, filterSearch }) => {
+const Header = ({ filteredByContinent, data, filterSearch, lastUpdate }) => {
   const [showChart, setShowChart] = useState(false);
   const { stats, statsHistory } = useStats({ data, filteredByContinent });
   const isMobile = useMediaQuery({
@@ -16,10 +16,7 @@ const Header = ({ filteredByContinent, data, filterSearch }) => {
   });
 
   const RenderHeaderTitle = () => (
-    <div
-      className="header--row row space-between"
-      style={{ backgroundColor: '#202020' }}
-    >
+    <div className="header--row row space-between header--top-bar">
       <Title as="h3" data-cy="title" inverted className="header--title">
         <Icon name="chart line" />
         <Title.Content>COVID-19 Tracker</Title.Content>
@@ -31,7 +28,7 @@ const Header = ({ filteredByContinent, data, filterSearch }) => {
           rel="noreferrer"
           className="header--icon-btn"
         >
-          <Button icon>
+          <Button icon size="mini">
             <Icon color="black" name="github" />
           </Button>
         </a>
@@ -45,6 +42,7 @@ const Header = ({ filteredByContinent, data, filterSearch }) => {
             fluid
             style={{ minWidth: '250px' }}
             inverted
+            size="mini"
           />
         </div>
       </div>
@@ -91,6 +89,14 @@ const Header = ({ filteredByContinent, data, filterSearch }) => {
           {filteredByContinent ? data[0].name : 'Global Statistics'}
         </Title.Content>
       </Title>
+      <Title sub className="header--date">
+        as of{' '}
+        {new Date(lastUpdate).toLocaleString('en-US', {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+        })}
+      </Title>
       {!filteredByContinent && (
         <Button
           size="mini"
@@ -117,6 +123,7 @@ Header.propTypes = {
   data: PropTypes.array,
   filteredByContinent: PropTypes.bool,
   filterSearch: PropTypes.func,
+  lastUpdate: PropTypes.string,
 };
 
 export default Header;

@@ -1,63 +1,40 @@
 import React from 'react';
 import { List } from 'semantic-ui-react';
-import { useMediaQuery } from 'react-responsive';
+import './Footer.css';
 
 function Footer() {
-  const isDesktopOrLaptop = useMediaQuery({
-    query: '(min-device-width: 1224px)',
-  });
-  const isTabletOrMobileDevice = useMediaQuery({
-    query: '(max-device-width: 1223px)',
-  });
+  const items = [
+    {
+      id: 1,
+      url: 'https://github.com/grcldq',
+      name: 'GitHub',
+    },
+    {
+      id: 2,
+      url: 'https://geraldineatayan.com',
+      name: 'Portfolio',
+    },
+    {
+      id: 3,
+      url: 'https://github.com/disease-sh/api',
+      name: 'disease-sh api',
+    },
+    {
+      id: 4,
+      url: 'mailto:geraldineatayan@gmail.com',
+      name: 'Contact Me',
+    },
+  ];
 
   return (
-    <div className="footer" data-cy="footer">
-      {isDesktopOrLaptop && (
-        <div className="footer-container">
-          <List floated="right" horizontal>
-            <List.Item disabled href="#">
-              © Geraldine Atayan 2021
-            </List.Item>
-            <List.Item as="a" href="https://github.com/grcldq">
-              GitHub
-            </List.Item>
-            <List.Item as="a" href="https://grcldq.github.io/">
-              Portfolio
-            </List.Item>
-            <List.Item as="a" href="mailto:geraldineatayan@gmail.com">
-              Contact
-            </List.Item>
-          </List>
-          <List horizontal>
-            <List.Item as="a" href="https://github.com/disease-sh/api">
-              data from disease-sh
-            </List.Item>
-          </List>
-        </div>
-      )}
-      {isTabletOrMobileDevice && (
-        <div className="footer-container">
-          <List>
-            <List.Item disabled href="#">
-              © Geraldine Atayan 2021
-            </List.Item>
-          </List>
-          <List bulleted horizontal lin>
-            <List.Item as="a" href="https://github.com/grcldq">
-              GitHub
-            </List.Item>
-            <List.Item as="a" href="https://grcldq.github.io/">
-              Portfolio
-            </List.Item>
-            <List.Item as="a" href="mailto:geraldineatayan@gmail.com">
-              Contact
-            </List.Item>
-            <List.Item as="a" href="https://github.com/disease-sh/api">
-              data from disease-sh
-            </List.Item>
-          </List>
-        </div>
-      )}
+    <div className='footer--container'>
+      <List bulleted horizontal link inverted size='small'>
+        {items.map(item => (
+          <List.Item as="a" key={item.id} href={item.url}>
+            {item.name}
+          </List.Item>
+        ))}
+      </List>
     </div>
   );
 }

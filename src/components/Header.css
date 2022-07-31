@@ -17,13 +17,13 @@
   display: flex;
   align-content: center;
   justify-content: flex-end;
-  margin-right: 1rem;
 }
 
 .header--global-stats {
   margin-top: 1.2rem;
   padding-bottom: 0.5rem;
   text-align: center;
+  padding-top: 70px;
 }
 
 .header--chart-btn {
@@ -44,6 +44,19 @@
 .header--row {
   margin: 0 !important;
   padding: 4px 2rem;
+}
+
+.header--date {
+  margin: 4px 0 !important;
+  padding-bottom: 8px !important;
+}
+
+.header--top-bar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 2;
+  background-color: #202020;
 }
 
 .header--grid-container {
@@ -69,5 +82,9 @@
   .header--title {
     margin: 8px 4px !important;
     padding-bottom: 8px !important;
+  }
+  
+  .header--global-stats {
+    padding-top: 110px;
   }
 }
